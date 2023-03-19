@@ -1,9 +1,12 @@
+import { StatusBar, Text, View } from 'react-native';
+import { NativeBaseProvider } from 'native-base';
 import {
   useFonts,
   Roboto_400Regular,
   Roboto_700Bold,
 } from '@expo-google-fonts/roboto';
-import { Text, View } from 'react-native';
+
+import { Loading } from '@components/Loading';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -12,8 +15,23 @@ export default function App() {
   });
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {fontsLoaded ? <Text>MEINDICA</Text> : <View />}
-    </View>
+    <NativeBaseProvider>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+      {fontsLoaded ? (
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Text style={{ fontFamily: 'Roboto_700Bold', fontSize: 22 }}>
+            MEINDICA
+          </Text>
+        </View>
+      ) : (
+        <Loading />
+      )}
+    </NativeBaseProvider>
   );
 }
