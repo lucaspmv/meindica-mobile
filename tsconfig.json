@@ -33,7 +33,13 @@
       ],
       "@routes/*": [
         "./src/routes/*"
-      ]
+      ],
+      "@enums/*": [
+        "./src/enums/*"
+      ],
+      "@theme/*": [
+        "./src/theme/*"
+      ],
     }
   }
 }
