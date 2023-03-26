@@ -5,8 +5,10 @@ import {
 
 import { SignIn } from '@screens/SignIn';
 
+import { RouteNameEnum } from '@enums/RouteNameEnum';
+
 type AuthRoutesList = {
-  signIn: undefined;
+  [RouteNameEnum.SIGN_IN]: undefined;
 };
 
 export type AuthNavigatorRoutesProps =
@@ -17,7 +19,7 @@ const { Navigator, Screen } = createNativeStackNavigator<AuthRoutesList>();
 const AuthRoutes = () => {
   return (
     <Navigator screenOptions={{ headerShown: false }}>
-      <Screen name="signIn" component={SignIn} />
+      <Screen name={RouteNameEnum.SIGN_IN} component={SignIn} />
     </Navigator>
   );
 };

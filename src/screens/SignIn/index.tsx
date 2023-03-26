@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Text } from 'native-base';
 
 const SignIn: React.FC = () => {
