@@ -1,18 +1,21 @@
-import { Box, Text } from 'native-base';
+import { Button, Center, Text } from 'native-base';
 
 const SignIn: React.FC = () => {
   return (
-    <Box>
+    <Center flex={1}>
       <Text
         fontFamily="heading"
         fontSize="4xl"
         color="white"
-        mt={250}
         textAlign="center"
       >
         MEINDICA
       </Text>
-    </Box>
+
+      <Button mt={30} background="red.500" onPress={() => {}}>
+        Entrar com Google
+      </Button>
+    </Center>
   );
 };
 
