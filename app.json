@@ -23,8 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.lucaspmv.meindicamobile",
-      "versionCode": "1.0.1"
+      "package": "com.lucaspmv.meindicamobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
