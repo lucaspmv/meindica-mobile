@@ -1,8 +1,13 @@
 import axios from 'axios';
 
-const getUserData = async (token: string): Promise<any> => {
-  const { data } = await axios.get(
-    `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${token}`
+import { GetUserDataResponseDTO } from '@dtos/Google/getUserDataResponseDTO';
+
+const getUserData = async (token: string) => {
+  const { data } = await axios.get<GetUserDataResponseDTO>(
+    `https://www.googleapis.com/userinfo/v2/me`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 
   return data;
