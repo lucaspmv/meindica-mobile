@@ -10,10 +10,10 @@ const Routes = () => {
   const { colors } = useTheme();
 
   const theme = DefaultTheme;
-  theme.colors.background = colors.gray[700];
+  theme.colors.background = colors.white;
 
   return (
-    <Box flex={1} bg="gray.700">
+    <Box flex={1} bg="white">
       <NavigationContainer theme={theme}>
         {isAuthenticated ? <AppRoutes /> : <AuthRoutes />}
       </NavigationContainer>

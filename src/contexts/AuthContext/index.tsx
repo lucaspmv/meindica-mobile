@@ -1,4 +1,4 @@
-import { GetUserDataResponseDTO } from '@dtos/Google/getUserDataResponseDTO';
+import { GetUserDataResponseDTO } from '@dtos/Google/GetUserDataResponseDTO';
 import { AsyncStorageKeyEnum } from '@enums/AsyncStorageKeyEnum';
 import { UserTypeEnum } from '@enums/UserTypeEnum';
 import { getItem, removeItem, setItem } from '@services/AsyncStorage';

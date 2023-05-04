@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Button, Center, Text } from 'native-base';
+import { Button, Center } from 'native-base';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import { getUserData } from '@services/Google/getUserData';
@@ -26,26 +26,14 @@ const SignIn: React.FC = () => {
   };
 
   useEffect(() => {
-    if (response && response.type === 'success') {
-      if (response.authentication) {
-        getUserInfo(response.authentication.accessToken);
-      }
+    if (response && response.type === 'success' && response.authentication) {
+      getUserInfo(response.authentication.accessToken);
     }
   }, [response]);
 
   return (
     <Center flex={1}>
-      <Text
-        fontFamily="heading"
-        fontSize="4xl"
-        color="white"
-        textAlign="center"
-      >
-        MEINDICA
-      </Text>
-
       <Button
-        mt={30}
         background="red.500"
         onPress={() => promptAsync()}
         disabled={!request}
