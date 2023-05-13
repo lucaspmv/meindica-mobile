@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "meindica-mobile",
+    "name": "MEINDICA",
     "slug": "meindica-mobile",
     "scheme": "meindica-mobile",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -24,7 +24,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.lucaspmv.meindicamobile",
-      "versionCode": 2
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { GetUserDataResponseDTO } from '@dtos/Google/getUserDataResponseDTO';
+import { GetUserDataResponseDTO } from '@dtos/Google/GetUserDataResponseDTO';
 
 const getUserData = async (token: string) => {
   const { data } = await axios.get<GetUserDataResponseDTO>(

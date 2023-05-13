@@ -1,33 +1,58 @@
 import { NativeBaseProvider, StatusBar } from 'native-base';
+import * as SplashScreen from 'expo-splash-screen';
 import {
   useFonts,
-  Roboto_400Regular,
-  Roboto_700Bold,
-} from '@expo-google-fonts/roboto';
-
-import { AuthContextProvider } from '@contexts/AuthContext';
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  Montserrat_700Bold,
+} from '@expo-google-fonts/montserrat';
 
 import { Routes } from '@routes/index';
 
-import { Loading } from '@components/Loading';
 import { THEME } from '@theme/index';
+import { AuthContextProvider } from '@contexts/AuthContext';
+import { useCallback, useEffect, useState } from 'react';
+import { View } from 'react-native';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
+
   const [fontsLoaded] = useFonts({
-    Roboto_400Regular,
-    Roboto_700Bold,
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_700Bold,
   });
 
+  useEffect(() => {
+    if (fontsLoaded) {
+      setAppIsReady(true);
+    }
+  }, [fontsLoaded]);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
+
   return (
-    <NativeBaseProvider theme={THEME}>
-      <AuthContextProvider>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor="transparent"
-          translucent
-        />
-        {fontsLoaded ? <Routes /> : <Loading />}
-      </AuthContextProvider>
-    </NativeBaseProvider>
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <NativeBaseProvider theme={THEME}>
+        <AuthContextProvider>
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor="transparent"
+            translucent
+          />
+          <Routes />
+        </AuthContextProvider>
+      </NativeBaseProvider>
+    </View>
   );
 }

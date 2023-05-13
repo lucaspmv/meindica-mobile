@@ -1,21 +1,30 @@
 import { Box, useTheme } from 'native-base';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { AuthRoutes } from './auth.routes';
-import { AppRoutes } from './app.routes';
+
 import { useAuth } from '@hooks/useAuth';
 
+import { AuthRoutes } from './auth.routes';
+import { AppRoutes } from './app.routes';
+import { RegisterRoutes } from './register.routes';
+
 const Routes = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isRegistrationCompleted } = useAuth();
 
   const { colors } = useTheme();
 
   const theme = DefaultTheme;
-  theme.colors.background = colors.gray[700];
+  theme.colors.background = colors.white;
 
   return (
-    <Box flex={1} bg="gray.700">
+    <Box flex={1} bg="white">
       <NavigationContainer theme={theme}>
-        {isAuthenticated ? <AppRoutes /> : <AuthRoutes />}
+        {!isAuthenticated ? (
+          <AuthRoutes />
+        ) : !isRegistrationCompleted ? (
+          <RegisterRoutes />
+        ) : (
+          <AppRoutes />
+        )}
       </NavigationContainer>
     </Box>
   );
