@@ -2,6 +2,9 @@ import {
   createBottomTabNavigator,
   BottomTabNavigationProp,
 } from '@react-navigation/bottom-tabs';
+import { View } from 'native-base';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { Home } from '@screens/Home';
 import { Profile } from '@screens/Profile';
@@ -26,13 +29,16 @@ const AppRoutes = () => {
   const { userType } = useAuth();
 
   return (
-    <Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false }}>
-      <Screen name={RouteNameEnum.HOME} component={Home} />
-      {userType === UserTypeEnum.SERVICE_PROVIDER && (
-        <Screen name={RouteNameEnum.SERVICES} component={Services} />
-      )}
-      <Screen name={RouteNameEnum.PROFILE} component={Profile} />
-    </Navigator>
+    <>
+      <View height={RFValue(getStatusBarHeight())} />
+      <Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false }}>
+        <Screen name={RouteNameEnum.HOME} component={Home} />
+        {userType === UserTypeEnum.SERVICE_PROVIDER && (
+          <Screen name={RouteNameEnum.SERVICES} component={Services} />
+        )}
+        <Screen name={RouteNameEnum.PROFILE} component={Profile} />
+      </Navigator>
+    </>
   );
 };
 

@@ -2,9 +2,10 @@ import { NativeBaseProvider, StatusBar } from 'native-base';
 import * as SplashScreen from 'expo-splash-screen';
 import {
   useFonts,
-  Roboto_400Regular,
-  Roboto_700Bold,
-} from '@expo-google-fonts/roboto';
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  Montserrat_700Bold,
+} from '@expo-google-fonts/montserrat';
 
 import { Routes } from '@routes/index';
 
@@ -19,8 +20,9 @@ export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
 
   const [fontsLoaded] = useFonts({
-    Roboto_400Regular,
-    Roboto_700Bold,
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_700Bold,
   });
 
   useEffect(() => {
@@ -44,7 +46,7 @@ export default function App() {
       <NativeBaseProvider theme={THEME}>
         <AuthContextProvider>
           <StatusBar
-            barStyle="light-content"
+            barStyle="dark-content"
             backgroundColor="transparent"
             translucent
           />

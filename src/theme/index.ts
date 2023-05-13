@@ -21,8 +21,9 @@ export const THEME = extendTheme({
     },
   },
   fonts: {
-    heading: 'Roboto_700Bold',
-    body: 'Roboto_400Regular',
+    regular: 'Montserrat_400Regular',
+    medium: 'Montserrat_500Medium',
+    bold: 'Montserrat_700Bold',
   },
   fontSizes: {
     xs: 12,
