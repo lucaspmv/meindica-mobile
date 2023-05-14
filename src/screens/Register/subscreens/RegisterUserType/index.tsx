@@ -48,12 +48,13 @@ const RegisterUserType: React.FC = () => {
         </Box>
         <Image source={SelectUserTypeImage} alt="unDraw" mx="auto" />
         <VStack>
-          <RegisterButton
-            label="OFEREÇO SERVIÇOS"
-            onPress={() => register(UserTypeEnum.SERVICE_PROVIDER)}
-          />
+          <RegisterButton label="OFEREÇO SERVIÇOS" onPress={() => {}} />
           <Divider h={RFValue(4)} bg="white" />
-          <RegisterButton label="PROCURO SERVIÇOS" type="secondary" />
+          <RegisterButton
+            label="PROCURO SERVIÇOS"
+            type="secondary"
+            onPress={() => register(UserTypeEnum.CUSTOMER)}
+          />
         </VStack>
       </VStack>
     </View>

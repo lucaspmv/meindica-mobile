@@ -32,8 +32,9 @@ const SignIn: React.FC = () => {
 
         login(user);
       } catch (error) {
-        setIsLoading(false);
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     },
     [login]

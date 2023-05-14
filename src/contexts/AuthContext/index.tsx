@@ -2,6 +2,8 @@ import { GetUserDataResponseDTO } from '@dtos/Google/GetUserDataResponseDTO';
 import { AsyncStorageKeyEnum } from '@enums/AsyncStorageKeyEnum';
 import { UserTypeEnum } from '@enums/UserTypeEnum';
 import { getItem, removeItem, setItem } from '@services/AsyncStorage';
+import { loginService } from '@services/Users/login';
+import { registerService } from '@services/Users/register';
 import {
   ReactNode,
   createContext,
@@ -13,9 +15,8 @@ import {
 
 interface AuthContextDataProps {
   isAuthenticated: boolean;
-  isRegistrationCompleted: boolean;
   userId?: string;
-  userType: UserTypeEnum;
+  userType?: UserTypeEnum;
   register: (type: UserTypeEnum) => Promise<void>;
   login: (user: GetUserDataResponseDTO) => Promise<void>;
   logout: () => Promise<void>;
@@ -28,77 +29,68 @@ const AuthContext = createContext<AuthContextDataProps>(
 const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [token, setToken] = useState<string>();
   const [userId, setUserId] = useState<string>();
-  const [userType, setUserType] = useState<UserTypeEnum>(
-    UserTypeEnum.NOT_FILLED
-  );
-  const [isRegistrationCompleted, setIsRegistrationCompleted] = useState(false);
+  const [userType, setUserType] = useState<UserTypeEnum>();
 
   const isAuthenticated = useMemo(() => {
-    return !!token;
-  }, [token]);
+    return !!userId;
+  }, [userId]);
 
   const login = useCallback(async (user: GetUserDataResponseDTO) => {
     try {
-      // Aqui será feita a requisição de login para a api
-      await setItem(
-        AsyncStorageKeyEnum.TOKEN,
-        'eyJhbGciOiJIUzI1NiJ9.eyJJc3N1ZXIiOiJJc3N1ZXIifQ.HLkw6rgYSwcv0sE69OKiNQFvHoo-6VqlxC5nKuMmftg'
-      );
-      await setItem(AsyncStorageKeyEnum.USER_ID, user.id);
-      await setItem(AsyncStorageKeyEnum.IS_REGISTRATION_COMPLETED, false);
+      const loginResponse = await loginService({
+        googleId: user.id,
+        email: user.email,
+        name: user.name,
+        avatar: user.picture,
+      });
 
-      setToken(
-        'eyJhbGciOiJIUzI1NiJ9.eyJJc3N1ZXIiOiJJc3N1ZXIifQ.HLkw6rgYSwcv0sE69OKiNQFvHoo-6VqlxC5nKuMmftg'
-      );
-      setIsRegistrationCompleted(false);
-      setUserId(user.id);
-      setUserType(UserTypeEnum.NOT_FILLED);
+      if (loginResponse.userType) {
+        await setItem(AsyncStorageKeyEnum.USER_TYPE, loginResponse.userType);
+        setUserType(loginResponse.userType);
+      }
+
+      await setItem(AsyncStorageKeyEnum.USER_ID, loginResponse.userId);
+      setUserId(loginResponse.userId);
+
+      // await setItem(AsyncStorageKeyEnum.USER_ID, user.id);
+      // setUserId(user.id);
     } catch (err) {
       console.log(err);
     }
   }, []);
 
-  const register = useCallback(async (type: UserTypeEnum) => {
-    try {
-      // req para completar cadastro
+  const register = useCallback(
+    async (type: UserTypeEnum) => {
+      try {
+        if (userId) {
+          await registerService({
+            userId,
+            type,
+          });
 
-      await setItem(AsyncStorageKeyEnum.IS_REGISTRATION_COMPLETED, true);
-      await setItem(AsyncStorageKeyEnum.USER_TYPE, type);
+          await setItem(AsyncStorageKeyEnum.USER_TYPE, type);
+          setUserType(type);
+        }
 
-      setIsRegistrationCompleted(true);
-      setUserType(type);
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+        // await setItem(AsyncStorageKeyEnum.USER_TYPE, type);
+        // setUserType(type);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [userId]
+  );
 
   const logout = useCallback(async () => {
-    await removeItem(AsyncStorageKeyEnum.TOKEN);
-    await removeItem(AsyncStorageKeyEnum.IS_REGISTRATION_COMPLETED);
     await removeItem(AsyncStorageKeyEnum.USER_ID);
     await removeItem(AsyncStorageKeyEnum.USER_TYPE);
 
-    setToken(undefined);
-    setIsRegistrationCompleted(false);
-    setUserType(UserTypeEnum.NOT_FILLED);
+    setUserType(undefined);
     setUserId(undefined);
   }, []);
 
   useEffect(() => {
-    getItem(AsyncStorageKeyEnum.TOKEN).then((value) => {
-      if (value) {
-        setToken(value);
-      }
-    });
-    getItem<boolean>(AsyncStorageKeyEnum.IS_REGISTRATION_COMPLETED).then(
-      (value) => {
-        if (value) {
-          setIsRegistrationCompleted(value);
-        }
-      }
-    );
     getItem(AsyncStorageKeyEnum.USER_ID).then((value) => {
       if (value) {
         setUserId(value);
@@ -115,7 +107,6 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
     <AuthContext.Provider
       value={{
         isAuthenticated,
-        isRegistrationCompleted,
         userId,
         userType,
         login,

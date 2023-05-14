@@ -8,7 +8,7 @@ import { AppRoutes } from './app.routes';
 import { RegisterRoutes } from './register.routes';
 
 const Routes = () => {
-  const { isAuthenticated, isRegistrationCompleted } = useAuth();
+  const { isAuthenticated, userType } = useAuth();
 
   const { colors } = useTheme();
 
@@ -20,7 +20,7 @@ const Routes = () => {
       <NavigationContainer theme={theme}>
         {!isAuthenticated ? (
           <AuthRoutes />
-        ) : !isRegistrationCompleted ? (
+        ) : userType === undefined ? (
           <RegisterRoutes />
         ) : (
           <AppRoutes />
