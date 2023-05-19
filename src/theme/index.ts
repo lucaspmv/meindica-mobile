@@ -2,6 +2,11 @@ import { extendTheme } from 'native-base';
 
 export const THEME = extendTheme({
   colors: {
+    purple: {
+      700: '#4A43EC',
+      600: '#3D56F0',
+      500: '#5669FF',
+    },
     green: {
       700: '#00875F',
       500: '#00B37E',

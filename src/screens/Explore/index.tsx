@@ -1,11 +1,11 @@
 import { Center, Text } from 'native-base';
 
-const Services: React.FC = () => {
+const Explore: React.FC = () => {
   return (
     <Center flex={1}>
-      <Text color="white">SERVIÇOS</Text>
+      <Text color="white">EXPLORAR</Text>
     </Center>
   );
 };
 
-export { Services };
+export { Explore };

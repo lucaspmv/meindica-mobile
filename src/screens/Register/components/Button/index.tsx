@@ -1,4 +1,10 @@
-import { Center, IPressableProps, Pressable, Text } from 'native-base';
+import {
+  Center,
+  IPressableProps,
+  Pressable,
+  Text,
+  useTheme,
+} from 'native-base';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -12,13 +18,15 @@ const RegisterButton: React.FC<RegisterButtonProps> = ({
   type = 'primary',
   ...rest
 }) => {
+  const { colors } = useTheme();
+
   return (
     <Pressable
       height={RFValue(58)}
       pl={RFValue(25)}
       pr={RFValue(12)}
       borderRadius={RFValue(15)}
-      bg={type === 'primary' ? '#5669FF' : 'white'}
+      bg={type === 'primary' ? 'purple.500' : 'white'}
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
@@ -41,13 +49,13 @@ const RegisterButton: React.FC<RegisterButtonProps> = ({
       <Text
         fontFamily="medium"
         fontSize={RFValue(16)}
-        color={type === 'primary' ? 'white' : '#3D56F0'}
+        color={type === 'primary' ? 'white' : 'purple.600'}
       >
         {label}
       </Text>
       <Center
         p={RFValue(2)}
-        backgroundColor={type === 'primary' ? '#3D56F0' : 'white'}
+        backgroundColor={type === 'primary' ? 'purple.600' : 'white'}
         borderRadius={99999}
         borderWidth={RFValue(2)}
         borderColor="#576AFF"
@@ -55,7 +63,7 @@ const RegisterButton: React.FC<RegisterButtonProps> = ({
         <Ionicons
           name="arrow-forward"
           size={RFValue(20)}
-          color={type === 'primary' ? 'white' : '#3D56F0'}
+          color={type === 'primary' ? 'white' : colors.purple[600]}
         />
       </Center>
     </Pressable>

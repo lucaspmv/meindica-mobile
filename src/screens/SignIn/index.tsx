@@ -56,7 +56,7 @@ const SignIn: React.FC = () => {
         h={RFValue(56 / 4)}
         w="75%"
         borderRadius={RFValue(12)}
-        backgroundColor="#5669FF"
+        backgroundColor="purple.500"
         isLoading={isLoading}
         _loading={{
           opacity: 1,

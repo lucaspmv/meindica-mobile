@@ -20,8 +20,6 @@ export type RegisterNavigatorRoutesProps =
 const { Navigator, Screen } = createNativeStackNavigator<RegisterRoutesList>();
 
 const RegisterRoutes = () => {
-  // req para puxar dados e descobrir qual rota deve ser a inicial
-
   return (
     <>
       <View height={RFValue(getStatusBarHeight())} />
