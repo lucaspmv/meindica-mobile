@@ -53,7 +53,11 @@ const RegisterUserType: React.FC = () => {
             onPress={() => register(UserTypeEnum.SERVICE_PROVIDER)}
           />
           <Divider h={RFValue(4)} bg="white" />
-          <RegisterButton label="PROCURO SERVIÇOS" type="secondary" />
+          <RegisterButton
+            label="PROCURO SERVIÇOS"
+            type="secondary"
+            onPress={() => register(UserTypeEnum.CUSTOMER)}
+          />
         </VStack>
       </VStack>
     </View>

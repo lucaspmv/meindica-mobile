@@ -1,42 +1,32 @@
-import {
-  createBottomTabNavigator,
-  BottomTabNavigationProp,
-} from '@react-navigation/bottom-tabs';
 import { View } from 'native-base';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-import { Home } from '@screens/Home';
-import { Profile } from '@screens/Profile';
-import { Services } from '@screens/Services';
-
-import { useAuth } from '@hooks/useAuth';
-
 import { RouteNameEnum } from '@enums/RouteNameEnum';
-import { UserTypeEnum } from '@enums/UserTypeEnum';
+
+import {
+  NativeStackNavigationProp,
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
+import { BottomTabRoutes } from './bottom-tab.routes';
 
 type AppRoutesList = {
-  [RouteNameEnum.HOME]: undefined;
-  [RouteNameEnum.SERVICES]: undefined;
-  [RouteNameEnum.PROFILE]: undefined;
+  [RouteNameEnum.BOTTOM_TAB_NAVIGATOR]: undefined;
 };
 
-export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutesList>;
+export type AppNavigatorRoutesProps = NativeStackNavigationProp<AppRoutesList>;
 
-const { Navigator, Screen } = createBottomTabNavigator<AppRoutesList>();
+const { Navigator, Screen } = createNativeStackNavigator<AppRoutesList>();
 
 const AppRoutes = () => {
-  const { userType } = useAuth();
-
   return (
     <>
       <View height={RFValue(getStatusBarHeight())} />
-      <Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false }}>
-        <Screen name={RouteNameEnum.HOME} component={Home} />
-        {userType === UserTypeEnum.SERVICE_PROVIDER && (
-          <Screen name={RouteNameEnum.SERVICES} component={Services} />
-        )}
-        <Screen name={RouteNameEnum.PROFILE} component={Profile} />
+      <Navigator screenOptions={{ headerShown: false }}>
+        <Screen
+          name={RouteNameEnum.BOTTOM_TAB_NAVIGATOR}
+          component={BottomTabRoutes}
+        />
       </Navigator>
     </>
   );

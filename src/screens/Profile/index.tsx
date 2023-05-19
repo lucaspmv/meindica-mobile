@@ -7,7 +7,7 @@ const Profile: React.FC = () => {
   return (
     <Center flex={1}>
       <Text color="white">PERFIL</Text>
-      <Button mt={30} background="fuchsia.600" onPress={logout} px={100}>
+      <Button mt={30} background="purple.500" onPress={logout} px={100}>
         Sair
       </Button>
     </Center>
