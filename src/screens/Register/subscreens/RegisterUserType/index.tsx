@@ -20,7 +20,7 @@ const RegisterUserType: React.FC = () => {
   const { register, logout } = useAuth();
 
   return (
-    <View flex={1} backgroundColor="white" px={RFValue(20)} pb={RFValue(48)}>
+    <View flex={1} px={RFValue(20)} pb={RFValue(48)}>
       <Pressable
         onPress={logout}
         ml={-1}
@@ -52,7 +52,7 @@ const RegisterUserType: React.FC = () => {
             label="OFEREÇO SERVIÇOS"
             onPress={() => register(UserTypeEnum.SERVICE_PROVIDER)}
           />
-          <Divider h={RFValue(4)} bg="white" />
+          <Divider h={RFValue(16)} bg="white" />
           <RegisterButton
             label="PROCURO SERVIÇOS"
             type="secondary"
