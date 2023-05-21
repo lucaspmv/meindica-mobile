@@ -1,13 +1,6 @@
-import {
-  Box,
-  Divider,
-  Image,
-  Pressable,
-  Text,
-  VStack,
-  View,
-} from 'native-base';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Box, Divider, Image, Text, VStack, View } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import { useAuth } from '@hooks/useAuth';
@@ -15,29 +8,20 @@ import { UserTypeEnum } from '@enums/UserTypeEnum';
 import { RegisterButton } from '@screens/Register/components/Button';
 
 import SelectUserTypeImage from '@assets/images/select-user-type.png';
+import { ButtonBack } from '@screens/Register/components/ButtonBack';
+import { RouteNameEnum } from '@enums/RouteNameEnum';
+import { RegisterNavigatorRoutesProps } from '@routes/register.routes';
 
 const RegisterUserType: React.FC = () => {
+  const { navigate } = useNavigation<RegisterNavigatorRoutesProps>();
   const { register, logout } = useAuth();
 
   return (
-    <View flex={1} backgroundColor="white" px={RFValue(20)} pb={RFValue(48)}>
-      <Pressable
-        onPress={logout}
-        ml={-1}
-        mr="auto"
-        hitSlop={{
-          top: 5,
-          right: 5,
-          bottom: 5,
-          left: 5,
-        }}
-      >
-        <Ionicons name="arrow-back" size={RFValue(22.5)} color="black" />
-      </Pressable>
-
-      <VStack flex={1} justifyContent="space-between">
+    <View flex={1} px={RFValue(20)} pb={RFValue(48)}>
+      <ButtonBack onPress={logout} />
+      <VStack flex={1} justifyContent="space-between" mt={RFValue(15)}>
         <Box>
-          <Text mt={RFValue(20)} fontFamily="medium" fontSize={RFValue(24)}>
+          <Text fontFamily="medium" fontSize={RFValue(24)}>
             Primeiro passo
           </Text>
           <Text mt={RFValue(13)} fontFamily="regular" fontSize={RFValue(15)}>
@@ -50,9 +34,10 @@ const RegisterUserType: React.FC = () => {
         <VStack>
           <RegisterButton
             label="OFEREÇO SERVIÇOS"
-            onPress={() => register(UserTypeEnum.SERVICE_PROVIDER)}
+            // onPress={() => register(UserTypeEnum.SERVICE_PROVIDER)}
+            onPress={() => navigate(RouteNameEnum.REGISTER_SERVICE_PROVIDER)}
           />
-          <Divider h={RFValue(4)} bg="white" />
+          <Divider h={RFValue(16)} bg="white" />
           <RegisterButton
             label="PROCURO SERVIÇOS"
             type="secondary"

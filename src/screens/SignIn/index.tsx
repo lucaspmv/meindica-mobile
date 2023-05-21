@@ -53,7 +53,7 @@ const SignIn: React.FC = () => {
         onPress={() => promptAsync()}
         disabled={!request || isLoading}
         mt={RFValue(140)}
-        h={RFValue(56 / 4)}
+        h={RFValue(56)}
         w="75%"
         borderRadius={RFValue(12)}
         backgroundColor="purple.500"
