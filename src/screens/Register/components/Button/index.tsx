@@ -22,7 +22,7 @@ const RegisterButton: React.FC<RegisterButtonProps> = ({
 
   return (
     <Pressable
-      height={RFValue(58)}
+      height={RFValue(56)}
       pl={RFValue(25)}
       pr={RFValue(12)}
       borderRadius={RFValue(15)}
@@ -30,20 +30,7 @@ const RegisterButton: React.FC<RegisterButtonProps> = ({
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
-      style={
-        type === 'secondary'
-          ? {
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 1,
-              },
-              shadowOpacity: 0.22,
-              shadowRadius: 2.22,
-              elevation: 3,
-            }
-          : {}
-      }
+      shadow={type === 'secondary' ? 2 : 0}
       {...rest}
     >
       <Text

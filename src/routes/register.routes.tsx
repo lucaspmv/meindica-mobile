@@ -9,9 +9,11 @@ import { Divider } from 'native-base';
 import { RegisterUserType } from '@screens/Register/subscreens/RegisterUserType';
 
 import { RouteNameEnum } from '@enums/RouteNameEnum';
+import { RegisterServiceProvider } from '@screens/Register/subscreens/RegisterServiceProvider';
 
 type RegisterRoutesList = {
   [RouteNameEnum.REGISTER_USER_TYPE]: undefined;
+  [RouteNameEnum.REGISTER_SERVICE_PROVIDER]: undefined;
 };
 
 export type RegisterNavigatorRoutesProps =
@@ -32,6 +34,10 @@ const RegisterRoutes = () => {
         <Screen
           name={RouteNameEnum.REGISTER_USER_TYPE}
           component={RegisterUserType}
+        />
+        <Screen
+          name={RouteNameEnum.REGISTER_SERVICE_PROVIDER}
+          component={RegisterServiceProvider}
         />
       </Navigator>
     </>
