@@ -9,7 +9,7 @@ import {
 
 import { RFValue } from 'react-native-responsive-fontsize';
 
-interface InputSelectProps extends ISelectProps {
+export interface InputSelectProps extends ISelectProps {
   label: string;
   isRequired: boolean;
   items: {

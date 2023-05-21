@@ -10,10 +10,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { validateCNPJ } from '@utils/validateCNPJ';
 import { states } from '@utils/states';
 
-import { InputSelect } from '@screens/Register/components/InputSelect';
 import { InputTextControlled } from '@screens/Register/components/InputText/InputTextControlled';
 import { RegisterButton } from '@screens/Register/components/Button';
 import { ButtonBack } from '@screens/Register/components/ButtonBack';
+import { InputSelectControlled } from '@screens/Register/components/InputSelect/InputSelectControlled';
 
 interface FormData {
   cnpj: string;
@@ -54,7 +54,7 @@ const RegisterServiceProvider: React.FC = () => {
   const {
     control,
     getValues,
-    formState: { errors },
+    formState: { isValid, errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
     mode: 'onChange',
@@ -111,7 +111,13 @@ const RegisterServiceProvider: React.FC = () => {
             keyboardType="numeric"
             errors={errors}
           />
-          <InputSelect label="Estado" items={states} isRequired />
+          <InputSelectControlled
+            control={control}
+            name="state"
+            label="Estado"
+            items={states}
+            isRequired
+          />
           <InputTextControlled
             control={control}
             name="city"
@@ -128,7 +134,11 @@ const RegisterServiceProvider: React.FC = () => {
             errors={errors}
           />
         </VStack>
-        <RegisterButton label="AVANÇAR" onPress={handleNext} />
+        <RegisterButton
+          label="AVANÇAR"
+          onPress={handleNext}
+          isDisabled={!isValid}
+        />
       </KeyboardAwareScrollView>
     </Box>
   );

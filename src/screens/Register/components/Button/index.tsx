@@ -31,6 +31,9 @@ const RegisterButton: React.FC<RegisterButtonProps> = ({
       alignItems="center"
       justifyContent="space-between"
       shadow={type === 'secondary' ? 2 : 0}
+      _disabled={{
+        opacity: 0.6,
+      }}
       {...rest}
     >
       <Text
