@@ -17,6 +17,8 @@ import { ButtonBack } from '@screens/Register/components/ButtonBack';
 import { InputSelectControlled } from '@screens/Register/components/InputSelect/InputSelectControlled';
 import { statesAndCitiesDictionary } from '@utils/statesAndCitiesDictionary';
 import { getDataByCNPJ } from '@services/ReceitaWS/getDataByCNPJ';
+import { useAuth } from '@hooks/useAuth';
+import { UserTypeEnum } from '@enums/UserTypeEnum';
 
 interface FormData {
   cnpj: string;
@@ -53,6 +55,7 @@ const schema = yup
   .required();
 
 const RegisterServiceProvider: React.FC = () => {
+  const { register } = useAuth();
   const { goBack } = useNavigation();
   const {
     control,
@@ -94,8 +97,8 @@ const RegisterServiceProvider: React.FC = () => {
 
   const handleNext = useCallback(() => {
     console.log(getValues());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    register(UserTypeEnum.SERVICE_PROVIDER);
+  }, [getValues, register]);
 
   useEffect(() => {
     if (watchState) {
