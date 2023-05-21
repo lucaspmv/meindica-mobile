@@ -2,12 +2,14 @@ import { Divider, HStack, IInputProps, Input, Text, VStack } from 'native-base';
 
 import { RFValue } from 'react-native-responsive-fontsize';
 
-interface InputTextProps extends IInputProps {
+export interface InputTextProps extends IInputProps {
   label: string;
+  error?: string;
 }
 
 const InputText: React.FC<InputTextProps> = ({
   label,
+  error,
   isRequired,
   multiline,
   ...rest
@@ -39,10 +41,18 @@ const InputText: React.FC<InputTextProps> = ({
         borderRadius={RFValue(12)}
         _focus={{
           bgColor: 'purple.50',
-          borderColor: 'purple.500',
+          borderColor: error ? 'danger.500' : 'purple.500',
         }}
         {...rest}
       />
+      {error && (
+        <>
+          <Divider height={RFValue(3)} bgColor="transparent" />
+          <Text fontFamily="medium" fontSize={RFValue(12)} color="danger.500">
+            {error}
+          </Text>
+        </>
+      )}
     </VStack>
   );
 };
