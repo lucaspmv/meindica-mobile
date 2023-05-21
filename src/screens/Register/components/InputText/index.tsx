@@ -1,3 +1,4 @@
+import { TextInput } from 'react-native';
 import { Divider, HStack, IInputProps, Input, Text, VStack } from 'native-base';
 
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -5,9 +6,11 @@ import { RFValue } from 'react-native-responsive-fontsize';
 export interface InputTextProps extends IInputProps {
   label: string;
   error?: string;
+  inputTextRef?: React.Ref<TextInput>;
 }
 
 const InputText: React.FC<InputTextProps> = ({
+  inputTextRef,
   label,
   error,
   isRequired,
@@ -33,6 +36,7 @@ const InputText: React.FC<InputTextProps> = ({
       </HStack>
       <Divider height={RFValue(6)} bgColor="transparent" />
       <Input
+        ref={inputTextRef ? inputTextRef : undefined}
         h={!multiline ? RFValue(46) : undefined}
         minH={multiline ? RFValue(46) : undefined}
         multiline={multiline}

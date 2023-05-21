@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+import { TextInput } from 'react-native';
+import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { Box, Text, VStack } from 'native-base';
@@ -14,6 +15,8 @@ import { InputTextControlled } from '@screens/Register/components/InputText/Inpu
 import { RegisterButton } from '@screens/Register/components/Button';
 import { ButtonBack } from '@screens/Register/components/ButtonBack';
 import { InputSelectControlled } from '@screens/Register/components/InputSelect/InputSelectControlled';
+import { statesAndCitiesDictionary } from '@utils/statesAndCitiesDictionary';
+import { getDataByCNPJ } from '@services/ReceitaWS/getDataByCNPJ';
 
 interface FormData {
   cnpj: string;
@@ -53,17 +56,60 @@ const RegisterServiceProvider: React.FC = () => {
   const { goBack } = useNavigation();
   const {
     control,
+    watch,
     getValues,
+    setValue,
+    resetField,
     formState: { isValid, errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
+  const cnpjInputRef = useRef<TextInput>(null);
+
+  const watchState = watch('state');
+  const watchCnpj = watch('cnpj');
+
+  const getServiceProviderDataByCNPJ = useCallback(
+    async (cnpj: string) => {
+      cnpjInputRef.current?.blur();
+      try {
+        const response = await getDataByCNPJ(cnpj);
+
+        const parsedPhone =
+          response.telefone.length < 15
+            ? `${response.telefone.split(' ')[0]} 9${
+                response.telefone.split(' ')[1]
+              }`
+            : response.telefone;
+
+        setValue('phone', parsedPhone);
+        setValue('state', response.uf);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [setValue]
+  );
 
   const handleNext = useCallback(() => {
     console.log(getValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (watchState) {
+      if (getValues('city')) {
+        resetField('city');
+      }
+    }
+  }, [getValues, resetField, watchState]);
+
+  useEffect(() => {
+    if (watchCnpj && watchCnpj.length === 18) {
+      getServiceProviderDataByCNPJ(watchCnpj);
+    }
+  }, [getServiceProviderDataByCNPJ, watchCnpj]);
 
   return (
     <Box flex={1}>
@@ -83,6 +129,7 @@ const RegisterServiceProvider: React.FC = () => {
         <VStack style={{ gap: RFValue(10) }} mb={RFValue(60)}>
           <InputTextControlled
             control={control}
+            inputTextRef={cnpjInputRef}
             name="cnpj"
             label="CNPJ"
             placeholder="00.000.000/0000-00"
@@ -114,16 +161,17 @@ const RegisterServiceProvider: React.FC = () => {
           <InputSelectControlled
             control={control}
             name="state"
-            label="Estado"
+            label="Estado de Atuação"
             items={states}
             isRequired
           />
-          <InputTextControlled
+          <InputSelectControlled
             control={control}
             name="city"
-            label="Cidade"
+            label="Cidade de Atuação"
+            isDisabled={!watchState}
+            items={watchState ? statesAndCitiesDictionary[watchState] : []}
             isRequired
-            errors={errors}
           />
           <InputTextControlled
             control={control}
