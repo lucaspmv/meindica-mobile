@@ -15,18 +15,21 @@ import { InputTextControlled } from '@screens/Register/components/InputText/Inpu
 import { RegisterButton } from '@screens/Register/components/Button';
 import { ButtonBack } from '@screens/Register/components/ButtonBack';
 import { InputSelectControlled } from '@screens/Register/components/InputSelect/InputSelectControlled';
+
 import { statesAndCitiesDictionary } from '@utils/statesAndCitiesDictionary';
 import { getDataByCNPJ } from '@services/ReceitaWS/getDataByCNPJ';
-import { useAuth } from '@hooks/useAuth';
-import { UserTypeEnum } from '@enums/UserTypeEnum';
+
+import { RegisterNavigatorRoutesProps } from '@routes/register.routes';
+import { RouteNameEnum } from '@enums/RouteNameEnum';
 
 interface FormData {
   cnpj: string;
   phone: string;
-  birthday: Date;
+  birthday: string;
   state: string;
   city: string;
   about: string;
+  activityName?: string;
 }
 
 const schema = yup
@@ -51,12 +54,12 @@ const schema = yup
     state: yup.string().required('O estado é obrigatório.'),
     city: yup.string().required('A cidade é obrigatória.'),
     about: yup.string(),
+    activityName: yup.string(),
   })
   .required();
 
 const RegisterServiceProvider: React.FC = () => {
-  const { register } = useAuth();
-  const { goBack } = useNavigation();
+  const { navigate, goBack } = useNavigation<RegisterNavigatorRoutesProps>();
   const {
     control,
     watch,
@@ -88,17 +91,22 @@ const RegisterServiceProvider: React.FC = () => {
 
         setValue('phone', parsedPhone);
         setValue('state', response.uf);
+        setValue('activityName', response.atividade_principal[0].text);
       } catch (err) {
         console.log(err);
       }
     },
-    [setValue]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   const handleNext = useCallback(() => {
     console.log(getValues());
-    register(UserTypeEnum.SERVICE_PROVIDER);
-  }, [getValues, register]);
+    navigate(RouteNameEnum.REGISTER_SERVICE_PROVIDER_ACTIVITY, {
+      ...getValues(),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (watchState) {
@@ -106,13 +114,15 @@ const RegisterServiceProvider: React.FC = () => {
         resetField('city');
       }
     }
-  }, [getValues, resetField, watchState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchState]);
 
   useEffect(() => {
-    if (watchCnpj && watchCnpj.length === 18) {
+    if (watchCnpj && watchCnpj.length === 18 && !getValues('phone')) {
       getServiceProviderDataByCNPJ(watchCnpj);
     }
-  }, [getServiceProviderDataByCNPJ, watchCnpj]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchCnpj]);
 
   return (
     <Box flex={1}>
