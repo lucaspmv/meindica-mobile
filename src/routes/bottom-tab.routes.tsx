@@ -43,7 +43,7 @@ const BottomTabRoutes = () => {
           tabBarInactiveTintColor: colors.gray[200],
           tabBarStyle: {
             marginHorizontal: RFValue(10),
-            marginBottom: RFValue(17),
+            marginBottom: RFValue(14),
             borderRadius: RFValue(44),
             height: RFValue(60),
             shadowColor: '#000',

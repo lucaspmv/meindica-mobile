@@ -1,6 +1,6 @@
 const categories = [
-  'Beleza e Estética',
   'Reformas e Reparos',
+  'Beleza e Estética',
   'Serviços Domésticos',
   'Limpeza e Conservação',
   'Educação e Instrução',

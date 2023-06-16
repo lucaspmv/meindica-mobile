@@ -1,7 +1,3 @@
-import { Divider } from 'native-base';
-import { RFValue } from 'react-native-responsive-fontsize';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-
 import { RouteNameEnum } from '@enums/RouteNameEnum';
 
 import {
@@ -21,12 +17,6 @@ const { Navigator, Screen } = createNativeStackNavigator<AppRoutesList>();
 const AppRoutes = () => {
   return (
     <>
-      <Divider
-        bgColor="transparent"
-        style={{
-          height: RFValue(getStatusBarHeight()),
-        }}
-      />
       <Navigator screenOptions={{ headerShown: false }}>
         <Screen
           name={RouteNameEnum.BOTTOM_TAB_NAVIGATOR}
