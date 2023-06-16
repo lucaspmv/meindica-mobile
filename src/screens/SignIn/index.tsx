@@ -30,7 +30,7 @@ const SignIn: React.FC = () => {
       try {
         const user = await getUserData(token);
 
-        login(user);
+        await login(user);
       } catch (error) {
         console.log(error);
       } finally {
