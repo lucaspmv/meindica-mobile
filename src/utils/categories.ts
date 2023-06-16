@@ -4,7 +4,6 @@ const categories = [
   'Serviços Domésticos',
   'Limpeza e Conservação',
   'Educação e Instrução',
-  'Saúde e Bem-estar',
   'Transporte de Passageiros',
   'Tecnologia da Informação',
 ];

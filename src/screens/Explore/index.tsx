@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Box, Text, Pressable, Divider, Image, FlatList } from 'native-base';
 import { StatusBar } from 'expo-status-bar';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -11,10 +11,28 @@ import SearchImage from '@assets/images/search.png';
 import { categories } from '@utils/categories';
 import { CategoryButton } from './components/CategoryButton';
 import { ServiceProviderCard } from './components/ServiceProviderCard';
+import { serviceProviders } from '@utils/serviceProviders';
 
 const Explore: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>();
+
+  const filteredServiceProviders = useMemo(() => {
+    return serviceProviders.filter((i) => {
+      let isValid = true;
+
+      if (searchText) {
+        isValid = i.activityName
+          .toLocaleLowerCase()
+          .includes(searchText.toLocaleLowerCase());
+      }
+      if (selectedCategory) {
+        isValid = isValid && i.category === selectedCategory;
+      }
+
+      return isValid;
+    });
+  }, [searchText, selectedCategory]);
 
   return (
     <>
@@ -97,14 +115,18 @@ const Explore: React.FC = () => {
                 <CategoryButton
                   title={item}
                   isActive={selectedCategory === item}
-                  onPress={() => setSelectedCategory(item)}
+                  onPress={
+                    selectedCategory === item
+                      ? () => setSelectedCategory(undefined)
+                      : () => setSelectedCategory(item)
+                  }
                 />
               )}
             />
           </Box>
           <FlatList
-            data={[{}, {}, {}, {}, {}, {}]}
-            // keyExtractor={}
+            data={filteredServiceProviders}
+            keyExtractor={(item) => item.name}
             contentContainerStyle={{
               paddingTop: RFValue(16),
               paddingHorizontal: RFValue(24),
@@ -112,7 +134,14 @@ const Explore: React.FC = () => {
             }}
             showsVerticalScrollIndicator={false}
             ItemSeparatorComponent={() => <Box h={RFValue(8)} />}
-            renderItem={({ item }) => <ServiceProviderCard />}
+            renderItem={({ item }) => (
+              <ServiceProviderCard
+                name={item.name}
+                activityName={item.activityName}
+                city={item.city}
+                image={item.image}
+              />
+            )}
           />
         </Box>
       </TouchableWithoutFeedback>

@@ -8,7 +8,19 @@ import MapPinImage from '@assets/images/map-pin.png';
 
 import { UserTypeEnum } from '@enums/UserTypeEnum';
 
-const ServiceProviderCard: React.FC = () => {
+interface ServiceProviderCardProps {
+  image: string;
+  name: string;
+  activityName: string;
+  city: string;
+}
+
+const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
+  image,
+  name,
+  activityName,
+  city,
+}) => {
   const { userType } = useAuth();
 
   return (
@@ -24,7 +36,7 @@ const ServiceProviderCard: React.FC = () => {
     >
       <Image
         source={{
-          uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+          uri: image,
         }}
         alt="Foto do Prestador de Serviço"
         w={RFValue(RFValue(79))}
@@ -40,7 +52,7 @@ const ServiceProviderCard: React.FC = () => {
             fontSize={RFValue(12)}
             numberOfLines={1}
           >
-            PEDREIRO
+            {activityName.toLocaleUpperCase()}
           </Text>
           <Text
             fontFamily="medium"
@@ -48,7 +60,7 @@ const ServiceProviderCard: React.FC = () => {
             color="#120D26"
             numberOfLines={2}
           >
-            Lucas Porto
+            {name}
           </Text>
         </Box>
         <Box flexDir="row" alignItems="center">
@@ -58,7 +70,7 @@ const ServiceProviderCard: React.FC = () => {
             mr={RFValue(8 / 4)}
           />
           <Text fontFamily="regular" fontSize={RFValue(12)} color="#747688">
-            Asa Norte
+            {city}
           </Text>
         </Box>
       </Box>
