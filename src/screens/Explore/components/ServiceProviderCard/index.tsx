@@ -42,7 +42,9 @@ const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
         w={RFValue(RFValue(79))}
         h={RFValue(92)}
         borderRadius={RFValue(10)}
-        mr={RFValue(18)}
+        style={{
+          marginRight: RFValue(18),
+        }}
       />
       <Box justifyContent="space-between" flex={1}>
         <Box mb={RFValue(8 / 4)}>
