@@ -52,9 +52,6 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
 
       await setItem(AsyncStorageKeyEnum.USER_ID, loginResponse.userId);
       setUserId(loginResponse.userId);
-
-      // await setItem(AsyncStorageKeyEnum.USER_ID, user.id);
-      // setUserId(user.id);
     } catch (err) {
       console.log(err);
     }
@@ -72,9 +69,6 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
           await setItem(AsyncStorageKeyEnum.USER_TYPE, type);
           setUserType(type);
         }
-
-        // await setItem(AsyncStorageKeyEnum.USER_TYPE, type);
-        // setUserType(type);
       } catch (err) {
         console.log(err);
       }

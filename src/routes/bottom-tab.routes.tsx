@@ -8,6 +8,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 import { Explore } from '@screens/Explore';
 import { Profile } from '@screens/Profile';
+import { Favorites } from '@screens/Favorites';
+import { Schedule } from '@screens/Schedule';
 
 import { RouteNameEnum } from '@enums/RouteNameEnum';
 import { UserTypeEnum } from '@enums/UserTypeEnum';
@@ -16,7 +18,7 @@ import { useAuth } from '@hooks/useAuth';
 
 type BottomTabRoutesList = {
   [RouteNameEnum.EXPLORE]: undefined;
-  [RouteNameEnum.APPOINTMENTS]: undefined;
+  [RouteNameEnum.SCHEDULE]: undefined;
   [RouteNameEnum.FAVORITES]: undefined;
   [RouteNameEnum.PROFILE]: undefined;
 };
@@ -41,7 +43,7 @@ const BottomTabRoutes = () => {
           tabBarInactiveTintColor: colors.gray[200],
           tabBarStyle: {
             marginHorizontal: RFValue(10),
-            marginBottom: RFValue(17),
+            marginBottom: RFValue(14),
             borderRadius: RFValue(44),
             height: RFValue(60),
             shadowColor: '#000',
@@ -62,7 +64,7 @@ const BottomTabRoutes = () => {
                 <MaterialIcons name="explore" size={miSize} color={color} />
               );
             }
-            if (route.name === RouteNameEnum.APPOINTMENTS) {
+            if (route.name === RouteNameEnum.SCHEDULE) {
               return (
                 <MaterialIcons
                   name="event-available"
@@ -83,9 +85,9 @@ const BottomTabRoutes = () => {
     >
       <Screen name={RouteNameEnum.EXPLORE} component={Explore} />
       {userType === UserTypeEnum.CUSTOMER ? (
-        <Screen name={RouteNameEnum.FAVORITES} component={Explore} />
+        <Screen name={RouteNameEnum.FAVORITES} component={Favorites} />
       ) : (
-        <Screen name={RouteNameEnum.APPOINTMENTS} component={Explore} />
+        <Screen name={RouteNameEnum.SCHEDULE} component={Schedule} />
       )}
       <Screen name={RouteNameEnum.PROFILE} component={Profile} />
     </Navigator>
