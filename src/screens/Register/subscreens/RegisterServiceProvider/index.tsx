@@ -127,10 +127,10 @@ const RegisterServiceProvider: React.FC = () => {
   return (
     <Box flex={1}>
       <ButtonBack
-        pl={RFValue(20)}
         onPress={goBack}
         style={{
           marginBottom: RFValue(4),
+          paddingLeft: RFValue(16),
         }}
       />
 

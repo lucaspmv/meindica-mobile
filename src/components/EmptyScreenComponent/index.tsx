@@ -14,10 +14,10 @@ const EmptyScreenComponent: React.FC<EmptyScreenComponentProps> = ({
   return (
     <Box
       flex={1}
-      pt={RFValue(15)}
-      px={RFValue(20)}
       style={{
         marginTop: RFValue(getStatusBarHeight()),
+        paddingHorizontal: RFValue(20),
+        paddingTop: RFValue(15),
       }}
     >
       <Text

@@ -119,9 +119,8 @@ const RegisterServiceProviderActivity: React.FC = () => {
   return (
     <Box flex={1}>
       <ButtonBack
-        pl={RFValue(20)}
         onPress={goBack}
-        style={{ marginBottom: RFValue(4) }}
+        style={{ marginBottom: RFValue(4), paddingLeft: RFValue(16) }}
       />
 
       <KeyboardAwareScrollView
@@ -181,15 +180,17 @@ const RegisterServiceProviderActivity: React.FC = () => {
             </Text>
             <Pressable
               h={RFValue(56)}
-              pl={RFValue(14 / 4)}
-              pr={RFValue(18 / 4)}
               flexDir="row"
               alignItems="center"
               borderWidth={RFValue(1)}
               borderRadius={RFValue(12)}
               borderColor="#E4DFDF"
               onPress={addImageFromLibrary}
-              style={{ marginBottom: RFValue(12) }}
+              style={{
+                marginBottom: RFValue(12),
+                paddingRight: RFValue(18),
+                paddingLeft: RFValue(14),
+              }}
             >
               <Box
                 w={RFValue(32)}

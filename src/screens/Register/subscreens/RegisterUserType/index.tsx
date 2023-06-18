@@ -17,7 +17,13 @@ const RegisterUserType: React.FC = () => {
   const { register, logout } = useAuth();
 
   return (
-    <View flex={1} px={RFValue(20)} pb={RFValue(48)}>
+    <View
+      flex={1}
+      style={{
+        paddingHorizontal: RFValue(20),
+        paddingBottom: RFValue(48),
+      }}
+    >
       <ButtonBack onPress={logout} />
       <VStack
         flex={1}

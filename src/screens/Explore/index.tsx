@@ -42,9 +42,11 @@ const Explore: React.FC = () => {
           <Box>
             <Box
               height={RFValue(185)}
-              pt={RFValue(getStatusBarHeight() + 14)}
               borderBottomRadius={RFValue(33)}
               bgColor="purple.700"
+              style={{
+                paddingTop: RFValue(getStatusBarHeight() + 14),
+              }}
             >
               <Box alignItems="center">
                 <Box
@@ -78,9 +80,9 @@ const Explore: React.FC = () => {
               <Box
                 flexDir="row"
                 alignItems="center"
-                px={RFValue(27)}
                 style={{
                   marginTop: RFValue(26),
+                  paddingHorizontal: RFValue(27),
                 }}
               >
                 <Pressable

@@ -23,8 +23,6 @@ const RegisterButton: React.FC<RegisterButtonProps> = ({
   return (
     <Pressable
       height={RFValue(56)}
-      pl={RFValue(25)}
-      pr={RFValue(12)}
       borderRadius={RFValue(15)}
       bg={type === 'primary' ? 'purple.500' : 'white'}
       flexDirection="row"
@@ -33,6 +31,10 @@ const RegisterButton: React.FC<RegisterButtonProps> = ({
       shadow={type === 'secondary' ? 2 : 0}
       _disabled={{
         opacity: 0.6,
+      }}
+      style={{
+        paddingLeft: RFValue(25),
+        paddingRight: RFValue(12),
       }}
       {...rest}
     >
