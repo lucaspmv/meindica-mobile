@@ -1,13 +1,12 @@
 import { useAuth } from '@hooks/useAuth';
-import { Button, Center, Text } from 'native-base';
+import { Button, Center } from 'native-base';
 
 const Profile: React.FC = () => {
   const { logout } = useAuth();
 
   return (
     <Center flex={1}>
-      <Text color="white">PERFIL</Text>
-      <Button mt={30} background="purple.500" onPress={logout} px={100}>
+      <Button background="purple.500" onPress={logout} px={100}>
         Sair
       </Button>
     </Center>

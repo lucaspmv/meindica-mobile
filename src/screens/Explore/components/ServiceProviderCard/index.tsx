@@ -47,7 +47,11 @@ const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
         }}
       />
       <Box justifyContent="space-between" flex={1}>
-        <Box mb={RFValue(8 / 4)}>
+        <Box
+          style={{
+            marginBottom: RFValue(8),
+          }}
+        >
           <Text
             fontFamily="semibold"
             color="purple.500"
@@ -69,7 +73,9 @@ const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
           <Image
             source={MapPinImage}
             alt="Marcador de Mapa"
-            mr={RFValue(8 / 4)}
+            style={{
+              marginRight: RFValue(8),
+            }}
           />
           <Text fontFamily="regular" fontSize={RFValue(12)} color="#747688">
             {city}

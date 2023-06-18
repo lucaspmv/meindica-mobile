@@ -19,12 +19,24 @@ const RegisterUserType: React.FC = () => {
   return (
     <View flex={1} px={RFValue(20)} pb={RFValue(48)}>
       <ButtonBack onPress={logout} />
-      <VStack flex={1} justifyContent="space-between" mt={RFValue(15)}>
+      <VStack
+        flex={1}
+        justifyContent="space-between"
+        style={{
+          marginTop: RFValue(15),
+        }}
+      >
         <Box>
           <Text fontFamily="medium" fontSize={RFValue(24)}>
             Primeiro passo
           </Text>
-          <Text mt={RFValue(13)} fontFamily="regular" fontSize={RFValue(15)}>
+          <Text
+            fontFamily="regular"
+            fontSize={RFValue(15)}
+            style={{
+              marginTop: RFValue(13),
+            }}
+          >
             Para seguirmos com o seu cadastro, gostaríamos de saber se você está
             procurando algum serviço ou se você quer oferecer o seu serviço em
             nossa plataforma.

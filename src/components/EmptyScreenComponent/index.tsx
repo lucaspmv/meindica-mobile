@@ -16,9 +16,17 @@ const EmptyScreenComponent: React.FC<EmptyScreenComponentProps> = ({
       flex={1}
       pt={RFValue(15)}
       px={RFValue(20)}
-      mt={RFValue(getStatusBarHeight())}
+      style={{
+        marginTop: RFValue(getStatusBarHeight()),
+      }}
     >
-      <Text fontFamily="medium" fontSize={RFValue(24)} mb={RFValue(100)}>
+      <Text
+        fontFamily="medium"
+        fontSize={RFValue(24)}
+        style={{
+          marginBottom: RFValue(100),
+        }}
+      >
         {title}
       </Text>
       <Image source={EmptyImage} alt="unDraw" mx="auto" />

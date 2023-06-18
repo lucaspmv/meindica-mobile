@@ -126,7 +126,13 @@ const RegisterServiceProvider: React.FC = () => {
 
   return (
     <Box flex={1}>
-      <ButtonBack pl={RFValue(20)} onPress={goBack} mb={1} />
+      <ButtonBack
+        pl={RFValue(20)}
+        onPress={goBack}
+        style={{
+          marginBottom: RFValue(4),
+        }}
+      />
 
       <KeyboardAwareScrollView
         contentContainerStyle={{
@@ -136,10 +142,16 @@ const RegisterServiceProvider: React.FC = () => {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Text fontFamily="regular" fontSize={RFValue(15)} mb={RFValue(20)}>
+        <Text
+          fontFamily="regular"
+          fontSize={RFValue(15)}
+          style={{
+            marginBottom: RFValue(20),
+          }}
+        >
           Para completar o seu cadastro vamos precisar de mais alguns dados.
         </Text>
-        <VStack style={{ gap: RFValue(10) }} mb={RFValue(60)}>
+        <VStack style={{ gap: RFValue(10), marginBottom: RFValue(60) }}>
           <InputTextControlled
             control={control}
             inputTextRef={cnpjInputRef}
@@ -191,7 +203,7 @@ const RegisterServiceProvider: React.FC = () => {
             name="about"
             label="Sobre"
             multiline
-            placeholder="Conte um pouco sobre você e seus serviços..."
+            placeholder="Conte um pouco sobre você e seu serviço..."
             errors={errors}
           />
         </VStack>
