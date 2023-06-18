@@ -25,10 +25,12 @@ const InputText: React.FC<InputTextProps> = ({
         </Text>
         {isRequired && (
           <Text
-            ml={RFValue(1)}
             fontSize={RFValue(14)}
             lineHeight={RFValue(13)}
             color="danger.500"
+            style={{
+              marginLeft: RFValue(4),
+            }}
           >
             *
           </Text>

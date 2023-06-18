@@ -19,11 +19,13 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
       borderRadius={RFValue(20)}
       alignItems="center"
       justifyContent="center"
-      px={RFValue(24)}
       shadow={2}
       onPress={onPress}
       _pressed={{
         opacity: 0.95,
+      }}
+      style={{
+        paddingHorizontal: RFValue(24),
       }}
     >
       <Text fontFamily="medium" color="purple.700" fontSize={RFValue(15)}>

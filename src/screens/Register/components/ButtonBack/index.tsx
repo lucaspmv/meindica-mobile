@@ -5,13 +5,15 @@ import { RFValue } from 'react-native-responsive-fontsize';
 const ButtonBack: React.FC<IPressableProps> = ({ ...rest }) => {
   return (
     <Pressable
-      ml={-1}
       mr="auto"
       hitSlop={{
         top: 5,
         right: 5,
         bottom: 5,
         left: 5,
+      }}
+      style={{
+        marginLeft: -RFValue(4),
       }}
       {...rest}
     >

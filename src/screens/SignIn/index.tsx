@@ -52,7 +52,6 @@ const SignIn: React.FC = () => {
       <Button
         onPress={() => promptAsync()}
         disabled={!request || isLoading}
-        mt={RFValue(140)}
         h={RFValue(56)}
         w="75%"
         borderRadius={RFValue(12)}
@@ -65,14 +64,19 @@ const SignIn: React.FC = () => {
           color: '#FFFFFF',
           size: 'lg',
         }}
+        style={{
+          marginTop: RFValue(140),
+        }}
       >
         <HStack alignItems="center">
           <Image source={GoogleLogoImage} alt="Google" />
           <Text
-            ml={RFValue(13)}
             fontFamily="body"
             fontSize={RFValue(16)}
             color="#FFFFFF"
+            style={{
+              marginLeft: RFValue(13),
+            }}
           >
             Login com Google
           </Text>

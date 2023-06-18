@@ -118,7 +118,10 @@ const RegisterServiceProviderActivity: React.FC = () => {
 
   return (
     <Box flex={1}>
-      <ButtonBack pl={RFValue(20)} onPress={goBack} mb={1} />
+      <ButtonBack
+        onPress={goBack}
+        style={{ marginBottom: RFValue(4), paddingLeft: RFValue(16) }}
+      />
 
       <KeyboardAwareScrollView
         contentContainerStyle={{
@@ -129,11 +132,15 @@ const RegisterServiceProviderActivity: React.FC = () => {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Text fontFamily="regular" fontSize={RFValue(15)} mb={RFValue(20)}>
+        <Text
+          fontFamily="regular"
+          fontSize={RFValue(15)}
+          style={{ marginBottom: RFValue(20) }}
+        >
           Agora vamos cadastrar a sua atividade principal. Esses dados servirão
           para você poder divulgar o seu serviço.
         </Text>
-        <VStack style={{ gap: RFValue(10) }} mb={RFValue(60)}>
+        <VStack style={{ gap: RFValue(10), marginBottom: RFValue(60) }}>
           <InputSelectControlled
             control={control}
             name="category"
@@ -167,21 +174,23 @@ const RegisterServiceProviderActivity: React.FC = () => {
             <Text
               fontSize={RFValue(13)}
               fontFamily="semibold"
-              mb={RFValue(6 / 4)}
+              style={{ marginBottom: RFValue(6) }}
             >
               Adicionar fotos
             </Text>
             <Pressable
               h={RFValue(56)}
-              pl={RFValue(14 / 4)}
-              pr={RFValue(18 / 4)}
               flexDir="row"
               alignItems="center"
               borderWidth={RFValue(1)}
               borderRadius={RFValue(12)}
               borderColor="#E4DFDF"
               onPress={addImageFromLibrary}
-              mb={RFValue(12)}
+              style={{
+                marginBottom: RFValue(12),
+                paddingRight: RFValue(18),
+                paddingLeft: RFValue(14),
+              }}
             >
               <Box
                 w={RFValue(32)}
@@ -194,10 +203,9 @@ const RegisterServiceProviderActivity: React.FC = () => {
                 <Feather name="upload" size={RFValue(18)} color="#265EFD" />
               </Box>
               <Box
-                ml={RFValue(8 / 4)}
                 height={RFValue(32)}
                 justifyContent="center"
-                style={{ gap: RFValue(3) }}
+                style={{ gap: RFValue(3), marginLeft: RFValue(8) }}
               >
                 <Text
                   fontFamily="medium"

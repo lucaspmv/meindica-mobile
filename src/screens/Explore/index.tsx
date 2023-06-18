@@ -42,18 +42,28 @@ const Explore: React.FC = () => {
           <Box>
             <Box
               height={RFValue(185)}
-              pt={RFValue(getStatusBarHeight() + 14)}
               borderBottomRadius={RFValue(33)}
               bgColor="purple.700"
+              style={{
+                paddingTop: RFValue(getStatusBarHeight() + 14),
+              }}
             >
               <Box alignItems="center">
-                <Box flexDir="row" alignItems="center" mb={RFValue(1)}>
+                <Box
+                  flexDir="row"
+                  alignItems="center"
+                  style={{
+                    marginBottom: RFValue(4),
+                  }}
+                >
                   <Text
                     fontFamily="regular"
                     fontSize={RFValue(11)}
                     opacity={0.7}
                     color="white"
-                    mr={RFValue(1)}
+                    style={{
+                      marginRight: RFValue(4),
+                    }}
                   >
                     Localização atual
                   </Text>
@@ -70,10 +80,16 @@ const Explore: React.FC = () => {
               <Box
                 flexDir="row"
                 alignItems="center"
-                mt={RFValue(26)}
-                px={RFValue(27)}
+                style={{
+                  marginTop: RFValue(26),
+                  paddingHorizontal: RFValue(27),
+                }}
               >
-                <Pressable mr={RFValue(10)}>
+                <Pressable
+                  style={{
+                    marginRight: RFValue(10),
+                  }}
+                >
                   <Image source={SearchImage} alt="Procurar" />
                 </Pressable>
                 <Divider h={RFValue(20)} w={RFValue(1)} bgColor="#7974E7" />
