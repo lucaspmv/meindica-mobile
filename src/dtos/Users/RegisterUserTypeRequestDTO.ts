@@ -1,6 +1,6 @@
 import { UserTypeEnum } from '@enums/UserTypeEnum';
 
-export interface RegisterUserRequestDTO {
+export interface RegisterUserTypeRequestDTO {
   userId: string;
   type: UserTypeEnum;
 }

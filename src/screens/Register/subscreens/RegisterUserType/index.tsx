@@ -14,7 +14,7 @@ import { RegisterNavigatorRoutesProps } from '@routes/register.routes';
 
 const RegisterUserType: React.FC = () => {
   const { navigate } = useNavigation<RegisterNavigatorRoutesProps>();
-  const { register, logout } = useAuth();
+  const { registerUserType, logout } = useAuth();
 
   return (
     <View
@@ -59,7 +59,7 @@ const RegisterUserType: React.FC = () => {
           <RegisterButton
             label="PROCURO SERVIÇOS"
             type="secondary"
-            onPress={() => register(UserTypeEnum.CUSTOMER)}
+            onPress={() => registerUserType(UserTypeEnum.CUSTOMER)}
           />
         </VStack>
       </VStack>

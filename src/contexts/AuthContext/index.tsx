@@ -1,9 +1,11 @@
 import { GetUserDataResponseDTO } from '@dtos/Google/GetUserDataResponseDTO';
+import { RegisterServiceProviderRequestDTO } from '@dtos/Users/RegisterServiceProviderRequestDTO';
 import { AsyncStorageKeyEnum } from '@enums/AsyncStorageKeyEnum';
 import { UserTypeEnum } from '@enums/UserTypeEnum';
 import { getItem, removeItem, setItem } from '@services/AsyncStorage';
 import { loginService } from '@services/Users/login';
-import { registerService } from '@services/Users/register';
+import { registerServiceProviderService } from '@services/Users/registerServiceProvider';
+import { registerUserTypeService } from '@services/Users/registerUserType';
 import {
   ReactNode,
   createContext,
@@ -17,9 +19,12 @@ interface AuthContextDataProps {
   isAuthenticated: boolean;
   userId?: string;
   userType?: UserTypeEnum;
-  register: (type: UserTypeEnum) => Promise<void>;
   login: (user: GetUserDataResponseDTO) => Promise<void>;
   logout: () => Promise<void>;
+  registerUserType: (type: UserTypeEnum) => Promise<void>;
+  registerServiceProvider: (
+    data: RegisterServiceProviderRequestDTO
+  ) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextDataProps>(
@@ -57,17 +62,36 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, []);
 
-  const register = useCallback(
+  const registerUserType = useCallback(
     async (type: UserTypeEnum) => {
       try {
         if (userId) {
-          await registerService({
+          await registerUserTypeService({
             userId,
             type,
           });
 
           await setItem(AsyncStorageKeyEnum.USER_TYPE, type);
           setUserType(type);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [userId]
+  );
+
+  const registerServiceProvider = useCallback(
+    async (data: RegisterServiceProviderRequestDTO) => {
+      try {
+        if (userId) {
+          await registerServiceProviderService({ ...data, userId });
+
+          await setItem(
+            AsyncStorageKeyEnum.USER_TYPE,
+            UserTypeEnum.SERVICE_PROVIDER
+          );
+          setUserType(UserTypeEnum.SERVICE_PROVIDER);
         }
       } catch (err) {
         console.log(err);
@@ -104,8 +128,9 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
         userId,
         userType,
         login,
-        register,
         logout,
+        registerUserType,
+        registerServiceProvider,
       }}
     >
       {children}

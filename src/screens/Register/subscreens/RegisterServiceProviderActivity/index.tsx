@@ -9,13 +9,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
+import { useAuth } from '@hooks/useAuth';
+
 import { InputTextControlled } from '@screens/Register/components/InputText/InputTextControlled';
 import { RegisterButton } from '@screens/Register/components/Button';
 import { ButtonBack } from '@screens/Register/components/ButtonBack';
 import { InputSelectControlled } from '@screens/Register/components/InputSelect/InputSelectControlled';
 
-import { useAuth } from '@hooks/useAuth';
-import { UserTypeEnum } from '@enums/UserTypeEnum';
 import { categories } from '@utils/categories';
 import { RegisterRoutesList } from '@routes/register.routes';
 import { RouteNameEnum } from '@enums/RouteNameEnum';
@@ -29,7 +29,7 @@ interface ImageType {
 interface FormData {
   category: string;
   activityName: string;
-  description: string;
+  description: string | undefined;
 }
 
 const schema = yup
@@ -41,7 +41,7 @@ const schema = yup
   .required();
 
 const RegisterServiceProviderActivity: React.FC = () => {
-  const { register } = useAuth();
+  const { registerServiceProvider } = useAuth();
   const { goBack } = useNavigation();
   const { params } =
     useRoute<
@@ -61,6 +61,7 @@ const RegisterServiceProviderActivity: React.FC = () => {
   });
 
   const [images, setImages] = useState<ImageType[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const addImageFromLibrary = useCallback(async () => {
     if (images.length === 5) {
@@ -97,17 +98,20 @@ const RegisterServiceProviderActivity: React.FC = () => {
     [images]
   );
 
-  const handleSubmit = useCallback(() => {
-    console.log(
-      JSON.stringify({
+  const handleSubmit = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      await registerServiceProvider({
         ...getValues(),
         ...params,
         images: images.map((image) => image.base64),
-      })
-    );
-    register(UserTypeEnum.SERVICE_PROVIDER);
+      });
+    } catch (err) {
+      setIsLoading(false);
+      console.log(err);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [register, images, params]);
+  }, [images, params, registerServiceProvider]);
 
   useEffect(() => {
     if (params.activityName && !getValues('activityName')) {
@@ -257,7 +261,8 @@ const RegisterServiceProviderActivity: React.FC = () => {
         <RegisterButton
           label="AVANÇAR"
           onPress={handleSubmit}
-          isDisabled={!isValid}
+          isDisabled={!isValid || isLoading}
+          isLoading={isLoading}
           mt="auto"
         />
       </KeyboardAwareScrollView>
