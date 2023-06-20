@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Box, Text, Pressable, Divider, Image, FlatList } from 'native-base';
 import { StatusBar } from 'expo-status-bar';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Keyboard, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { Picker } from '@react-native-picker/picker';
 
 import SearchImage from '@assets/images/search.png';
 
@@ -12,10 +13,19 @@ import { categories } from '@utils/categories';
 import { CategoryButton } from './components/CategoryButton';
 import { ServiceProviderCard } from './components/ServiceProviderCard';
 import { serviceProviders } from '@utils/serviceProviders';
+import { states } from '@utils/states';
+import { statesAndCitiesDictionary } from '@utils/statesAndCitiesDictionary';
 
 const Explore: React.FC = () => {
+  const statePickerRef = useRef<any>(null);
+  const cityPickerRef = useRef<any>(null);
+
   const [searchText, setSearchText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>();
+  const [selectedState, setSelectedState] = useState('DF');
+  const [selectedCity, setSelectedCity] = useState<string | undefined>(
+    'Brasília'
+  );
 
   const filteredServiceProviders = useMemo(() => {
     return serviceProviders.filter((i) => {
@@ -29,14 +39,55 @@ const Explore: React.FC = () => {
       if (selectedCategory) {
         isValid = isValid && i.category === selectedCategory;
       }
+      if (selectedCity) {
+        isValid = isValid && i.city === selectedCity;
+      }
 
-      return isValid;
+      return isValid && i.state === selectedState;
     });
-  }, [searchText, selectedCategory]);
+  }, [searchText, selectedCategory, selectedCity, selectedState]);
+
+  const onStateChange = useCallback((itemValue: string) => {
+    setSelectedState(itemValue);
+    setSelectedCity(undefined);
+
+    setTimeout(() => {
+      cityPickerRef.current?.focus();
+    }, 500);
+  }, []);
 
   return (
     <>
       <StatusBar style="light" />
+      <Picker
+        ref={statePickerRef}
+        onValueChange={onStateChange}
+        style={{ display: 'none' }}
+        mode="dropdown"
+      >
+        {states.map((state) => (
+          <Picker.Item
+            key={state.value}
+            label={state.label}
+            value={state.value}
+          />
+        ))}
+      </Picker>
+      <Picker
+        ref={cityPickerRef}
+        selectedValue={selectedCity}
+        onValueChange={(itemValue) => setSelectedCity(itemValue)}
+        style={{ display: 'none' }}
+        mode="dropdown"
+      >
+        {statesAndCitiesDictionary[selectedState].map((state) => (
+          <Picker.Item
+            key={state.value}
+            label={state.label}
+            value={state.value}
+          />
+        ))}
+      </Picker>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Box flex={1}>
           <Box>
@@ -48,7 +99,11 @@ const Explore: React.FC = () => {
                 paddingTop: RFValue(getStatusBarHeight() + 14),
               }}
             >
-              <Box alignItems="center">
+              <Pressable
+                onPress={statePickerRef.current?.focus}
+                alignItems="center"
+                mx="auto"
+              >
                 <Box
                   flexDir="row"
                   alignItems="center"
@@ -65,7 +120,7 @@ const Explore: React.FC = () => {
                       marginRight: RFValue(4),
                     }}
                   >
-                    Localização atual
+                    Localização
                   </Text>
                   <FontAwesome
                     name="caret-down"
@@ -74,9 +129,9 @@ const Explore: React.FC = () => {
                   />
                 </Box>
                 <Text fontFamily="medium" fontSize={RFValue(13)} color="white">
-                  Brasília, DF
+                  {selectedCity}, {selectedState}
                 </Text>
-              </Box>
+              </Pressable>
               <Box
                 flexDir="row"
                 alignItems="center"

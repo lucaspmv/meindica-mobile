@@ -109,14 +109,14 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
 
   useEffect(() => {
-    getItem(AsyncStorageKeyEnum.USER_ID).then((value) => {
-      if (value) {
-        setUserId(value);
-      }
-    });
     getItem(AsyncStorageKeyEnum.USER_TYPE).then((value) => {
       if (value) {
         setUserType(value as UserTypeEnum);
+      }
+    });
+    getItem(AsyncStorageKeyEnum.USER_ID).then((value) => {
+      if (value) {
+        setUserId(value);
       }
     });
   }, []);
