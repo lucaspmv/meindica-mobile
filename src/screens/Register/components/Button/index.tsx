@@ -53,11 +53,13 @@ const RegisterButton: React.FC<RegisterButtonProps> = ({
             {label}
           </Text>
           <Center
-            p={RFValue(2)}
             backgroundColor={type === 'primary' ? 'purple.600' : 'white'}
             borderRadius={99999}
             borderWidth={RFValue(2)}
             borderColor="#576AFF"
+            style={{
+              padding: RFValue(7),
+            }}
           >
             <Ionicons
               name="arrow-forward"

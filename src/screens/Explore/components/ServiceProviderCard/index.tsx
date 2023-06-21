@@ -7,6 +7,9 @@ import { useAuth } from '@hooks/useAuth';
 import MapPinImage from '@assets/images/map-pin.png';
 
 import { UserTypeEnum } from '@enums/UserTypeEnum';
+import { useNavigation } from '@react-navigation/native';
+import { AppNavigatorRoutesProps } from '@routes/app.routes';
+import { RouteNameEnum } from '@enums/RouteNameEnum';
 
 interface ServiceProviderCardProps {
   image: string;
@@ -22,16 +25,24 @@ const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
   city,
 }) => {
   const { userType } = useAuth();
+  const { navigate } = useNavigation<AppNavigatorRoutesProps>();
 
   return (
     <Pressable
+      onPress={() =>
+        navigate(RouteNameEnum.SERVICE_PROVIDER_ACTIVITY_DETAILS, {
+          serviceProviderId: 'serviceProviderId',
+        })
+      }
       flexDirection="row"
-      p={RFValue(10)}
       bgColor="white"
       shadow={1}
       borderRadius={RFValue(18)}
       _pressed={{
         opacity: 0.9,
+      }}
+      style={{
+        padding: RFValue(10),
       }}
     >
       <Image
