@@ -102,8 +102,9 @@ const RegisterServiceProviderActivity: React.FC = () => {
     setIsLoading(true);
     try {
       await registerServiceProvider({
-        ...getValues(),
         ...params,
+        ...getValues(),
+        activityName: getValues('activityName').trim(),
         images: images.map((image) => image.base64),
       });
     } catch (err) {
@@ -118,7 +119,7 @@ const RegisterServiceProviderActivity: React.FC = () => {
       setValue('activityName', params.activityName);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.activityName]);
+  }, []);
 
   return (
     <Box flex={1}>

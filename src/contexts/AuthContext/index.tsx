@@ -1,10 +1,12 @@
 import { GetUserDataResponseDTO } from '@dtos/Google/GetUserDataResponseDTO';
-import { RegisterServiceProviderRequestDTO } from '@dtos/Users/RegisterServiceProviderRequestDTO';
+import { RegisterServiceProviderRequestDTO } from '@dtos/ServiceProviders/RegisterServiceProviderRequestDTO';
+
 import { AsyncStorageKeyEnum } from '@enums/AsyncStorageKeyEnum';
 import { UserTypeEnum } from '@enums/UserTypeEnum';
 import { getItem, removeItem, setItem } from '@services/AsyncStorage';
+import { registerServiceProviderService } from '@services/ServiceProviders/registerServiceProvider';
 import { loginService } from '@services/Users/login';
-import { registerServiceProviderService } from '@services/Users/registerServiceProvider';
+
 import { registerUserTypeService } from '@services/Users/registerUserType';
 import {
   ReactNode,

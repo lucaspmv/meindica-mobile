@@ -1,6 +1,5 @@
+import { RegisterServiceProviderRequestDTO } from '@dtos/ServiceProviders/RegisterServiceProviderRequestDTO';
 import { api } from '@services/api';
-
-import { RegisterServiceProviderRequestDTO } from '@dtos/Users/RegisterServiceProviderRequestDTO';
 
 const registerServiceProviderService = async (
   params: RegisterServiceProviderRequestDTO & { userId: string }

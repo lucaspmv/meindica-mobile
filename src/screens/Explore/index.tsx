@@ -1,9 +1,22 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { Box, Text, Pressable, Divider, Image, FlatList } from 'native-base';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Box,
+  Text,
+  Pressable,
+  Divider,
+  Image,
+  FlatList,
+  useTheme,
+} from 'native-base';
 import { StatusBar } from 'expo-status-bar';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { Keyboard, TextInput, TouchableWithoutFeedback } from 'react-native';
+import {
+  Keyboard,
+  RefreshControl,
+  TextInput,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 
@@ -12,13 +25,20 @@ import SearchImage from '@assets/images/search.png';
 import { categories } from '@utils/categories';
 import { CategoryButton } from './components/CategoryButton';
 import { ServiceProviderCard } from './components/ServiceProviderCard';
-import { serviceProviders } from '@utils/serviceProviders';
 import { states } from '@utils/states';
 import { statesAndCitiesDictionary } from '@utils/statesAndCitiesDictionary';
+import { GetServiceProviderResponseDTO as ServiceProvider } from '@dtos/ServiceProviders/getServiceProviderResponseDTO';
+import { getServiceProvidersService } from '@services/ServiceProviders/getServiceProviders';
 
 const Explore: React.FC = () => {
   const statePickerRef = useRef<any>(null);
   const cityPickerRef = useRef<any>(null);
+  const { colors } = useTheme();
+
+  const [serviceProviders, setServiceProviders] = useState<ServiceProvider[]>(
+    []
+  );
+  const [isRefreshing, setIsRefreshing] = useState(true);
 
   const [searchText, setSearchText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>();
@@ -45,7 +65,13 @@ const Explore: React.FC = () => {
 
       return isValid && i.state === selectedState;
     });
-  }, [searchText, selectedCategory, selectedCity, selectedState]);
+  }, [
+    searchText,
+    selectedCategory,
+    selectedCity,
+    selectedState,
+    serviceProviders,
+  ]);
 
   const onStateChange = useCallback((itemValue: string) => {
     setSelectedState(itemValue);
@@ -54,6 +80,29 @@ const Explore: React.FC = () => {
     setTimeout(() => {
       cityPickerRef.current?.focus();
     }, 500);
+  }, []);
+
+  const getServiceProviders = useCallback(async () => {
+    if (!isRefreshing) {
+      setIsRefreshing(true);
+    }
+
+    try {
+      const response = await getServiceProvidersService();
+
+      if (response.length > 0) {
+        setServiceProviders(response);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [isRefreshing]);
+
+  useEffect(() => {
+    getServiceProviders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -197,6 +246,13 @@ const Explore: React.FC = () => {
           </Box>
           <FlatList
             data={filteredServiceProviders}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={getServiceProviders}
+                colors={[colors.purple[500]]}
+              />
+            }
             keyExtractor={(item) => item.name}
             contentContainerStyle={{
               paddingTop: RFValue(16),
@@ -208,9 +264,10 @@ const Explore: React.FC = () => {
             renderItem={({ item }) => (
               <ServiceProviderCard
                 name={item.name}
+                publicName={item.publicName}
                 activityName={item.activityName}
                 city={item.city}
-                image={item.image}
+                image={item.avatar}
               />
             )}
           />

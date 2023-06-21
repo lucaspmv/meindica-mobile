@@ -14,6 +14,7 @@ import { RouteNameEnum } from '@enums/RouteNameEnum';
 interface ServiceProviderCardProps {
   image: string;
   name: string;
+  publicName?: string;
   activityName: string;
   city: string;
 }
@@ -21,6 +22,7 @@ interface ServiceProviderCardProps {
 const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
   image,
   name,
+  publicName,
   activityName,
   city,
 }) => {
@@ -77,7 +79,7 @@ const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
             color="#120D26"
             numberOfLines={2}
           >
-            {name}
+            {publicName ?? name}
           </Text>
         </Box>
         <Box flexDir="row" alignItems="center">
