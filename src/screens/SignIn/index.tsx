@@ -26,15 +26,12 @@ const SignIn: React.FC = () => {
   const getUserInfo = useCallback(
     async (token: string) => {
       setIsLoading(true);
-
       try {
         const user = await getUserData(token);
-
-        await login(user);
+        login(user);
       } catch (error) {
-        console.log(error);
-      } finally {
         setIsLoading(false);
+        console.log(error);
       }
     },
     [login]

@@ -100,7 +100,7 @@ const Explore: React.FC = () => {
               }}
             >
               <Pressable
-                onPress={statePickerRef.current?.focus}
+                onPress={() => statePickerRef.current?.focus()}
                 alignItems="center"
                 mx="auto"
               >

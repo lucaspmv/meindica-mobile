@@ -42,24 +42,20 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
   }, [userId]);
 
   const login = useCallback(async (user: GetUserDataResponseDTO) => {
-    try {
-      const loginResponse = await loginService({
-        googleId: user.id,
-        email: user.email,
-        name: user.name,
-        avatar: user.picture,
-      });
+    const loginResponse = await loginService({
+      googleId: user.id,
+      email: user.email,
+      name: user.name,
+      avatar: user.picture,
+    });
 
-      if (loginResponse.userType) {
-        await setItem(AsyncStorageKeyEnum.USER_TYPE, loginResponse.userType);
-        setUserType(loginResponse.userType);
-      }
-
-      await setItem(AsyncStorageKeyEnum.USER_ID, loginResponse.userId);
-      setUserId(loginResponse.userId);
-    } catch (err) {
-      console.log(err);
+    if (loginResponse.userType) {
+      await setItem(AsyncStorageKeyEnum.USER_TYPE, loginResponse.userType);
+      setUserType(loginResponse.userType);
     }
+
+    await setItem(AsyncStorageKeyEnum.USER_ID, loginResponse.userId);
+    setUserId(loginResponse.userId);
   }, []);
 
   const registerUserType = useCallback(
@@ -83,18 +79,14 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
 
   const registerServiceProvider = useCallback(
     async (data: RegisterServiceProviderRequestDTO) => {
-      try {
-        if (userId) {
-          await registerServiceProviderService({ ...data, userId });
+      if (userId) {
+        await registerServiceProviderService({ ...data, userId });
 
-          await setItem(
-            AsyncStorageKeyEnum.USER_TYPE,
-            UserTypeEnum.SERVICE_PROVIDER
-          );
-          setUserType(UserTypeEnum.SERVICE_PROVIDER);
-        }
-      } catch (err) {
-        console.log(err);
+        await setItem(
+          AsyncStorageKeyEnum.USER_TYPE,
+          UserTypeEnum.SERVICE_PROVIDER
+        );
+        setUserType(UserTypeEnum.SERVICE_PROVIDER);
       }
     },
     [userId]
