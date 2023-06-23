@@ -1,9 +1,13 @@
 import { GetUserDataResponseDTO } from '@dtos/Google/GetUserDataResponseDTO';
+import { RegisterServiceProviderRequestDTO } from '@dtos/ServiceProviders/RegisterServiceProviderRequestDTO';
+
 import { AsyncStorageKeyEnum } from '@enums/AsyncStorageKeyEnum';
 import { UserTypeEnum } from '@enums/UserTypeEnum';
 import { getItem, removeItem, setItem } from '@services/AsyncStorage';
+import { registerServiceProviderService } from '@services/ServiceProviders/registerServiceProvider';
 import { loginService } from '@services/Users/login';
-import { registerService } from '@services/Users/register';
+
+import { registerUserTypeService } from '@services/Users/registerUserType';
 import {
   ReactNode,
   createContext,
@@ -17,9 +21,12 @@ interface AuthContextDataProps {
   isAuthenticated: boolean;
   userId?: string;
   userType?: UserTypeEnum;
-  register: (type: UserTypeEnum) => Promise<void>;
   login: (user: GetUserDataResponseDTO) => Promise<void>;
   logout: () => Promise<void>;
+  registerUserType: (type: UserTypeEnum) => Promise<void>;
+  registerServiceProvider: (
+    data: RegisterServiceProviderRequestDTO
+  ) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextDataProps>(
@@ -37,31 +44,27 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
   }, [userId]);
 
   const login = useCallback(async (user: GetUserDataResponseDTO) => {
-    try {
-      const loginResponse = await loginService({
-        googleId: user.id,
-        email: user.email,
-        name: user.name,
-        avatar: user.picture,
-      });
+    const loginResponse = await loginService({
+      googleId: user.id,
+      email: user.email,
+      name: user.name,
+      avatar: user.picture,
+    });
 
-      if (loginResponse.userType) {
-        await setItem(AsyncStorageKeyEnum.USER_TYPE, loginResponse.userType);
-        setUserType(loginResponse.userType);
-      }
-
-      await setItem(AsyncStorageKeyEnum.USER_ID, loginResponse.userId);
-      setUserId(loginResponse.userId);
-    } catch (err) {
-      console.log(err);
+    if (loginResponse.userType) {
+      await setItem(AsyncStorageKeyEnum.USER_TYPE, loginResponse.userType);
+      setUserType(loginResponse.userType);
     }
+
+    await setItem(AsyncStorageKeyEnum.USER_ID, loginResponse.userId);
+    setUserId(loginResponse.userId);
   }, []);
 
-  const register = useCallback(
+  const registerUserType = useCallback(
     async (type: UserTypeEnum) => {
       try {
         if (userId) {
-          await registerService({
+          await registerUserTypeService({
             userId,
             type,
           });
@@ -76,6 +79,21 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
     [userId]
   );
 
+  const registerServiceProvider = useCallback(
+    async (data: RegisterServiceProviderRequestDTO) => {
+      if (userId) {
+        await registerServiceProviderService({ ...data, userId });
+
+        await setItem(
+          AsyncStorageKeyEnum.USER_TYPE,
+          UserTypeEnum.SERVICE_PROVIDER
+        );
+        setUserType(UserTypeEnum.SERVICE_PROVIDER);
+      }
+    },
+    [userId]
+  );
+
   const logout = useCallback(async () => {
     await removeItem(AsyncStorageKeyEnum.USER_ID);
     await removeItem(AsyncStorageKeyEnum.USER_TYPE);
@@ -85,14 +103,14 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
 
   useEffect(() => {
-    getItem(AsyncStorageKeyEnum.USER_ID).then((value) => {
-      if (value) {
-        setUserId(value);
-      }
-    });
     getItem(AsyncStorageKeyEnum.USER_TYPE).then((value) => {
       if (value) {
         setUserType(value as UserTypeEnum);
+      }
+    });
+    getItem(AsyncStorageKeyEnum.USER_ID).then((value) => {
+      if (value) {
+        setUserId(value);
       }
     });
   }, []);
@@ -104,8 +122,9 @@ const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
         userId,
         userType,
         login,
-        register,
         logout,
+        registerUserType,
+        registerServiceProvider,
       }}
     >
       {children}

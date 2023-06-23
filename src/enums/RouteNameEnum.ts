@@ -8,6 +8,7 @@ enum RouteNameEnum {
   SCHEDULE = 'schedule',
   FAVORITES = 'favorites',
   PROFILE = 'profile',
+  SERVICE_PROVIDER_ACTIVITY_DETAILS = 'service_provider_activity_details',
 }
 
 export { RouteNameEnum };

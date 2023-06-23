@@ -4,10 +4,15 @@ import {
   NativeStackNavigationProp,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
-import { BottomTabRoutes } from './bottom-tab.routes';
 
-type AppRoutesList = {
+import { BottomTabRoutes } from './bottom-tab.routes';
+import { ServiceProviderActivityDetails } from '@screens/Explore/subscreens/ServiceProviderActivityDetails';
+
+export type AppRoutesList = {
   [RouteNameEnum.BOTTOM_TAB_NAVIGATOR]: undefined;
+  [RouteNameEnum.SERVICE_PROVIDER_ACTIVITY_DETAILS]: {
+    serviceProviderId: string;
+  };
 };
 
 export type AppNavigatorRoutesProps = NativeStackNavigationProp<AppRoutesList>;
@@ -21,6 +26,10 @@ const AppRoutes = () => {
         <Screen
           name={RouteNameEnum.BOTTOM_TAB_NAVIGATOR}
           component={BottomTabRoutes}
+        />
+        <Screen
+          name={RouteNameEnum.SERVICE_PROVIDER_ACTIVITY_DETAILS}
+          component={ServiceProviderActivityDetails}
         />
       </Navigator>
     </>

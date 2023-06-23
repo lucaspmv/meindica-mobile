@@ -28,8 +28,8 @@ interface FormData {
   birthday: string;
   state: string;
   city: string;
-  about: string;
-  activityName?: string;
+  about: string | undefined;
+  activityName: string | undefined;
 }
 
 const schema = yup
@@ -45,12 +45,29 @@ const schema = yup
       }),
     phone: yup
       .string()
-      .required('O número de telefone é obrigatório.')
-      .min(15, 'O telefone precisar ser um número válido.'),
+      .required('O número de celular é obrigatório.')
+      .min(15, 'O número de celular precisar ser um número válido.')
+      .matches(
+        /^\(\d{2}\) \d{5}-\d{4}$/,
+        'O número de celular precisa estar no formato (00) 00000-0000'
+      ),
     birthday: yup
       .string()
       .required('A data de nascimento é obrigatória')
-      .min(10, 'A data de nascimento precisa ser válida.'),
+      .min(10, 'A data de nascimento precisa ser válida.')
+      .test({
+        name: 'isOverageTest',
+        test: (value) => {
+          const [day, month, year] = value.split('/');
+          const userBirthday = new Date(`${year}-${month}-${day}`);
+          const currentDate = new Date();
+          const minimumAgeDate = new Date();
+          minimumAgeDate.setFullYear(currentDate.getFullYear() - 18);
+
+          return userBirthday <= minimumAgeDate;
+        },
+        message: 'Precisa ser maior de idade.',
+      }),
     state: yup.string().required('O estado é obrigatório.'),
     city: yup.string().required('A cidade é obrigatória.'),
     about: yup.string(),
@@ -101,7 +118,6 @@ const RegisterServiceProvider: React.FC = () => {
   );
 
   const handleNext = useCallback(() => {
-    console.log(getValues());
     navigate(RouteNameEnum.REGISTER_SERVICE_PROVIDER_ACTIVITY, {
       ...getValues(),
     });
