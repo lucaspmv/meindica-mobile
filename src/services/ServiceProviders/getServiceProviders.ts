@@ -1,5 +1,5 @@
 import { api } from '@services/api';
-import { GetServiceProviderResponseDTO } from '@dtos/ServiceProviders/getServiceProviderResponseDTO';
+import { GetServiceProviderResponseDTO } from '@dtos/ServiceProviders/GetServiceProviderResponseDTO';
 
 const getServiceProvidersService = async (): Promise<
   GetServiceProviderResponseDTO[]

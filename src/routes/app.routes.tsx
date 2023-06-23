@@ -8,7 +8,7 @@ import {
 import { BottomTabRoutes } from './bottom-tab.routes';
 import { ServiceProviderActivityDetails } from '@screens/Explore/subscreens/ServiceProviderActivityDetails';
 
-type AppRoutesList = {
+export type AppRoutesList = {
   [RouteNameEnum.BOTTOM_TAB_NAVIGATOR]: undefined;
   [RouteNameEnum.SERVICE_PROVIDER_ACTIVITY_DETAILS]: {
     serviceProviderId: string;

@@ -23,11 +23,14 @@ import { Picker } from '@react-native-picker/picker';
 import SearchImage from '@assets/images/search.png';
 
 import { categories } from '@utils/categories';
-import { CategoryButton } from './components/CategoryButton';
-import { ServiceProviderCard } from './components/ServiceProviderCard';
 import { states } from '@utils/states';
 import { statesAndCitiesDictionary } from '@utils/statesAndCitiesDictionary';
-import { GetServiceProviderResponseDTO as ServiceProvider } from '@dtos/ServiceProviders/getServiceProviderResponseDTO';
+
+import { CategoryButton } from './components/CategoryButton';
+import { ServiceProviderCard } from './components/ServiceProviderCard';
+
+import { GetServiceProviderResponseDTO as ServiceProvider } from '@dtos/ServiceProviders/GetServiceProviderResponseDTO';
+
 import { getServiceProvidersService } from '@services/ServiceProviders/getServiceProviders';
 
 const Explore: React.FC = () => {
@@ -263,6 +266,7 @@ const Explore: React.FC = () => {
             ItemSeparatorComponent={() => <Box h={RFValue(8)} />}
             renderItem={({ item }) => (
               <ServiceProviderCard
+                serviceProviderId={item.serviceProviderId}
                 name={item.name}
                 publicName={item.publicName}
                 activityName={item.activityName}

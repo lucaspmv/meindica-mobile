@@ -12,6 +12,7 @@ import { AppNavigatorRoutesProps } from '@routes/app.routes';
 import { RouteNameEnum } from '@enums/RouteNameEnum';
 
 interface ServiceProviderCardProps {
+  serviceProviderId: string;
   image: string;
   name: string;
   publicName?: string;
@@ -20,6 +21,7 @@ interface ServiceProviderCardProps {
 }
 
 const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
+  serviceProviderId,
   image,
   name,
   publicName,
@@ -33,7 +35,7 @@ const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
     <Pressable
       onPress={() =>
         navigate(RouteNameEnum.SERVICE_PROVIDER_ACTIVITY_DETAILS, {
-          serviceProviderId: 'serviceProviderId',
+          serviceProviderId,
         })
       }
       flexDirection="row"
