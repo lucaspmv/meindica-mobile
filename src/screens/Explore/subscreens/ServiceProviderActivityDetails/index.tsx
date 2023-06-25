@@ -13,6 +13,7 @@ import { StatusBar } from 'expo-status-bar';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import * as Linking from 'expo-linking';
 
 import { useAuth } from '@hooks/useAuth';
 
@@ -55,6 +56,21 @@ const ServiceProviderActivityDetails: React.FC = () => {
       setIsLoading(false);
     }
   }, [params.serviceProviderId]);
+
+  const handleGetInTouch = useCallback(() => {
+    const parsedPhone = serviceProviderActivityDetails.phone.replace(/\D/g, '');
+
+    Linking.openURL(
+      `https://api.whatsapp.com/send?phone=${parsedPhone}&text=Olá ${
+        serviceProviderActivityDetails.publicName ??
+        serviceProviderActivityDetails.name
+      }, como vai? Encontrei seu perfil através do aplicativo MEINDICA e gostaria de saber mais sobre o seu serviço.`
+    );
+  }, [
+    serviceProviderActivityDetails.name,
+    serviceProviderActivityDetails.phone,
+    serviceProviderActivityDetails.publicName,
+  ]);
 
   useEffect(() => {
     getServiceProviderActivityDetails();
@@ -260,6 +276,7 @@ const ServiceProviderActivityDetails: React.FC = () => {
               _pressed={{
                 opacity: 0.9,
               }}
+              onPress={handleGetInTouch}
             >
               <HStack alignItems="center">
                 <Image
