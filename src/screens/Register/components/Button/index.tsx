@@ -39,6 +39,9 @@ const RegisterButton: React.FC<RegisterButtonProps> = ({
         paddingLeft: !isLoading ? RFValue(25) : 0,
         paddingRight: !isLoading ? RFValue(12) : 0,
       }}
+      _pressed={{
+        opacity: 0.8,
+      }}
       {...rest}
     >
       {isLoading ? (

@@ -26,6 +26,7 @@ import { AppRoutesList } from '@routes/app.routes';
 import { useCallback, useEffect, useState } from 'react';
 import { GetServiceProviderActivityResponseDTO as ServiceProviderActivityDetailsType } from '@dtos/ServiceProviders/GetServiceProviderActivityResponseDTO';
 import { getServiceProviderActivityDetailsService } from '@services/ServiceProviders/getServiceProviderActivityDetails';
+import { ActivityImage } from './components/ActivityImage';
 
 const ServiceProviderActivityDetails: React.FC = () => {
   const { userType } = useAuth();
@@ -129,7 +130,11 @@ const ServiceProviderActivityDetails: React.FC = () => {
                     </Pressable>
                   </HStack>
                 </HStack>
-                <Text fontFamily="semibold" fontSize={RFValue(24)}>
+                <Text
+                  fontFamily="semibold"
+                  fontSize={RFValue(24)}
+                  lineHeight={RFValue(28)}
+                >
                   {serviceProviderActivityDetails.publicName ??
                     serviceProviderActivityDetails.name}
                 </Text>
@@ -186,32 +191,30 @@ const ServiceProviderActivityDetails: React.FC = () => {
                 >
                   {serviceProviderActivityDetails.description ?? 'N/A'}
                 </Text>
-                <Text
-                  fontFamily="bold"
-                  fontSize={RFValue(16)}
-                  color="#262627"
-                  style={{
-                    marginBottom: RFValue(4),
-                  }}
-                >
-                  Fotos
-                </Text>
-                <FlatList
-                  data={serviceProviderActivityDetails.images}
-                  keyExtractor={(item) => item.id}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  ItemSeparatorComponent={() => <Box w={RFValue(6)} />}
-                  renderItem={({ item }) => (
-                    <Image
-                      alt="Service Image"
-                      source={{ uri: item.base64 }}
-                      w={RFValue(93)}
-                      h={RFValue(65)}
-                      borderRadius={RFValue(3)}
+                {serviceProviderActivityDetails.images.length > 0 && (
+                  <>
+                    <Text
+                      fontFamily="bold"
+                      fontSize={RFValue(16)}
+                      color="#262627"
+                      style={{
+                        marginBottom: RFValue(4),
+                      }}
+                    >
+                      Fotos
+                    </Text>
+                    <FlatList
+                      data={serviceProviderActivityDetails.images}
+                      keyExtractor={(item) => item.id}
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      ItemSeparatorComponent={() => <Box w={RFValue(6)} />}
+                      renderItem={({ item }) => (
+                        <ActivityImage base64={item.base64} />
+                      )}
                     />
-                  )}
-                />
+                  </>
+                )}
                 <HStack
                   style={{
                     marginTop: RFValue(20),

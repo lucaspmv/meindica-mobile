@@ -125,6 +125,7 @@ const RegisterServiceProviderActivity: React.FC = () => {
     <Box flex={1}>
       <ButtonBack
         onPress={goBack}
+        disabled={isLoading}
         style={{ marginBottom: RFValue(4), paddingLeft: RFValue(16) }}
       />
 
@@ -261,7 +262,7 @@ const RegisterServiceProviderActivity: React.FC = () => {
         </VStack>
         <RegisterButton
           label="AVANÇAR"
-          onPress={handleSubmit}
+          onPress={() => handleSubmit()}
           isDisabled={!isValid || isLoading}
           isLoading={isLoading}
           mt="auto"
