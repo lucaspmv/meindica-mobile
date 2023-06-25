@@ -13,6 +13,7 @@ import { StatusBar } from 'expo-status-bar';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import * as Linking from 'expo-linking';
 
 import { useAuth } from '@hooks/useAuth';
 
@@ -26,6 +27,7 @@ import { AppRoutesList } from '@routes/app.routes';
 import { useCallback, useEffect, useState } from 'react';
 import { GetServiceProviderActivityResponseDTO as ServiceProviderActivityDetailsType } from '@dtos/ServiceProviders/GetServiceProviderActivityResponseDTO';
 import { getServiceProviderActivityDetailsService } from '@services/ServiceProviders/getServiceProviderActivityDetails';
+import { ActivityImage } from './components/ActivityImage';
 
 const ServiceProviderActivityDetails: React.FC = () => {
   const { userType } = useAuth();
@@ -54,6 +56,21 @@ const ServiceProviderActivityDetails: React.FC = () => {
       setIsLoading(false);
     }
   }, [params.serviceProviderId]);
+
+  const handleGetInTouch = useCallback(() => {
+    const parsedPhone = serviceProviderActivityDetails.phone.replace(/\D/g, '');
+
+    Linking.openURL(
+      `https://api.whatsapp.com/send?phone=${parsedPhone}&text=Olá ${
+        serviceProviderActivityDetails.publicName ??
+        serviceProviderActivityDetails.name
+      }, como vai? Encontrei seu perfil através do aplicativo MEINDICA e gostaria de saber mais sobre o seu serviço.`
+    );
+  }, [
+    serviceProviderActivityDetails.name,
+    serviceProviderActivityDetails.phone,
+    serviceProviderActivityDetails.publicName,
+  ]);
 
   useEffect(() => {
     getServiceProviderActivityDetails();
@@ -129,7 +146,11 @@ const ServiceProviderActivityDetails: React.FC = () => {
                     </Pressable>
                   </HStack>
                 </HStack>
-                <Text fontFamily="semibold" fontSize={RFValue(24)}>
+                <Text
+                  fontFamily="semibold"
+                  fontSize={RFValue(24)}
+                  lineHeight={RFValue(28)}
+                >
                   {serviceProviderActivityDetails.publicName ??
                     serviceProviderActivityDetails.name}
                 </Text>
@@ -186,32 +207,30 @@ const ServiceProviderActivityDetails: React.FC = () => {
                 >
                   {serviceProviderActivityDetails.description ?? 'N/A'}
                 </Text>
-                <Text
-                  fontFamily="bold"
-                  fontSize={RFValue(16)}
-                  color="#262627"
-                  style={{
-                    marginBottom: RFValue(4),
-                  }}
-                >
-                  Fotos
-                </Text>
-                <FlatList
-                  data={serviceProviderActivityDetails.images}
-                  keyExtractor={(item) => item.id}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  ItemSeparatorComponent={() => <Box w={RFValue(6)} />}
-                  renderItem={({ item }) => (
-                    <Image
-                      alt="Service Image"
-                      source={{ uri: item.base64 }}
-                      w={RFValue(93)}
-                      h={RFValue(65)}
-                      borderRadius={RFValue(3)}
+                {serviceProviderActivityDetails.images.length > 0 && (
+                  <>
+                    <Text
+                      fontFamily="bold"
+                      fontSize={RFValue(16)}
+                      color="#262627"
+                      style={{
+                        marginBottom: RFValue(4),
+                      }}
+                    >
+                      Fotos
+                    </Text>
+                    <FlatList
+                      data={serviceProviderActivityDetails.images}
+                      keyExtractor={(item) => item.id}
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      ItemSeparatorComponent={() => <Box w={RFValue(6)} />}
+                      renderItem={({ item }) => (
+                        <ActivityImage base64={item.base64} />
+                      )}
                     />
-                  )}
-                />
+                  </>
+                )}
                 <HStack
                   style={{
                     marginTop: RFValue(20),
@@ -257,6 +276,7 @@ const ServiceProviderActivityDetails: React.FC = () => {
               _pressed={{
                 opacity: 0.9,
               }}
+              onPress={handleGetInTouch}
             >
               <HStack alignItems="center">
                 <Image
