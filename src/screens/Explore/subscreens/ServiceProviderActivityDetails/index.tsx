@@ -112,7 +112,7 @@ const ServiceProviderActivityDetails: React.FC = () => {
                   alignItems="center"
                   style={{
                     marginTop: RFValue(11),
-                    marginBottom: RFValue(6),
+                    marginBottom: RFValue(10),
                     marginHorizontal: -RFValue(3.5),
                   }}
                 >
@@ -129,6 +129,7 @@ const ServiceProviderActivityDetails: React.FC = () => {
                         style={{
                           marginRight: RFValue(16),
                         }}
+                        opacity={0.6}
                       >
                         <Feather
                           name="heart"
