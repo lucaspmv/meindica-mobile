@@ -72,6 +72,7 @@ const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
             color="purple.500"
             fontSize={RFValue(12)}
             numberOfLines={1}
+            maxW="95%"
           >
             {activityName.toLocaleUpperCase()}
           </Text>
@@ -98,7 +99,12 @@ const ServiceProviderCard: React.FC<ServiceProviderCardProps> = ({
         </Box>
       </Box>
       {userType === UserTypeEnum.CUSTOMER && (
-        <FontAwesome name="heart-o" size={RFValue(18)} color="#313338" />
+        <FontAwesome
+          name="heart-o"
+          size={RFValue(18)}
+          color="#313338"
+          style={{ opacity: 0.6 }}
+        />
       )}
     </Pressable>
   );
