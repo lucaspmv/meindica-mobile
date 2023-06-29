@@ -28,6 +28,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { GetServiceProviderActivityResponseDTO as ServiceProviderActivityDetailsType } from '@dtos/ServiceProviders/GetServiceProviderActivityResponseDTO';
 import { getServiceProviderActivityDetailsService } from '@services/ServiceProviders/getServiceProviderActivityDetails';
 import { ActivityImage } from './components/ActivityImage';
+import { increaseServiceProviderActivityViewsService } from '@services/ServiceProviders/increaseServiceProviderActivityViews';
 
 const ServiceProviderActivityDetails: React.FC = () => {
   const { userType } = useAuth();
@@ -45,15 +46,18 @@ const ServiceProviderActivityDetails: React.FC = () => {
 
   const getServiceProviderActivityDetails = useCallback(async () => {
     try {
+      await increaseServiceProviderActivityViewsService(
+        params.serviceProviderId
+      );
+
       const response = await getServiceProviderActivityDetailsService(
         params.serviceProviderId
       );
 
       setServiceProviderActivityDetails(response);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
-    } finally {
-      setIsLoading(false);
     }
   }, [params.serviceProviderId]);
 
@@ -96,6 +100,21 @@ const ServiceProviderActivityDetails: React.FC = () => {
                 paddingBottom: RFValue(150),
               }}
             >
+              <HStack
+                position="absolute"
+                zIndex={1}
+                space={RFValue(6)}
+                opacity={0.4}
+                style={{
+                  top: 0,
+                  right: RFValue(10),
+                }}
+              >
+                <Text fontFamily="medium">
+                  {serviceProviderActivityDetails.views}
+                </Text>
+                <Feather name="eye" size={24} color="black" />
+              </HStack>
               <Image
                 source={DealImage}
                 alt="Deal Image"
@@ -272,7 +291,7 @@ const ServiceProviderActivityDetails: React.FC = () => {
               justifyContent="center"
               alignSelf="center"
               style={{
-                bottom: RFValue(14),
+                bottom: RFValue(28),
               }}
               _pressed={{
                 opacity: 0.9,

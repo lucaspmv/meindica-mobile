@@ -8,6 +8,7 @@ api.interceptors.request.use((config: AxiosRequestConfig): any => {
   console.log('REQUEST', {
     url: 'http://10.0.2.2:3333' + config.url,
     body: config.data,
+    method: config.method,
   });
 
   return config;
