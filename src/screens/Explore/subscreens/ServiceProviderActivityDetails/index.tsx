@@ -8,7 +8,7 @@ import {
   Spinner,
   Text,
 } from 'native-base';
-import { Feather } from '@expo/vector-icons';
+import { Feather, FontAwesome } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -29,6 +29,8 @@ import { GetServiceProviderActivityResponseDTO as ServiceProviderActivityDetails
 import { getServiceProviderActivityDetailsService } from '@services/ServiceProviders/getServiceProviderActivityDetails';
 import { ActivityImage } from './components/ActivityImage';
 import { increaseServiceProviderActivityViewsService } from '@services/ServiceProviders/increaseServiceProviderActivityViews';
+import { getItem, setItem } from '@services/AsyncStorage';
+import { AsyncStorageKeyEnum } from '@enums/AsyncStorageKeyEnum';
 
 const ServiceProviderActivityDetails: React.FC = () => {
   const { userType } = useAuth();
@@ -43,6 +45,7 @@ const ServiceProviderActivityDetails: React.FC = () => {
     useState<ServiceProviderActivityDetailsType>(
       {} as ServiceProviderActivityDetailsType
     );
+  const [isLiked, setIsLiked] = useState(false);
 
   const getServiceProviderActivityDetails = useCallback(async () => {
     try {
@@ -76,8 +79,60 @@ const ServiceProviderActivityDetails: React.FC = () => {
     serviceProviderActivityDetails.publicName,
   ]);
 
+  const onLike = useCallback(async () => {
+    const favoritesIds = await getItem<string[]>(
+      AsyncStorageKeyEnum.FAVORITES_IDS
+    );
+
+    if (favoritesIds && favoritesIds.length > 0) {
+      await setItem(AsyncStorageKeyEnum.FAVORITES_IDS, [
+        ...favoritesIds,
+        params.serviceProviderId,
+      ]);
+      setIsLiked(true);
+      return;
+    }
+
+    await setItem(AsyncStorageKeyEnum.FAVORITES_IDS, [
+      params.serviceProviderId,
+    ]);
+    setIsLiked(true);
+  }, [params.serviceProviderId]);
+
+  const onDislike = useCallback(async () => {
+    const favoritesIds = await getItem<string[]>(
+      AsyncStorageKeyEnum.FAVORITES_IDS
+    );
+
+    if (favoritesIds) {
+      await setItem(
+        AsyncStorageKeyEnum.FAVORITES_IDS,
+        favoritesIds.filter((id) => id !== params.serviceProviderId)
+      );
+    }
+
+    setIsLiked(false);
+  }, [params.serviceProviderId]);
+
+  const handleLikeAndDislike = useCallback(() => {
+    if (isLiked) {
+      onDislike();
+    } else {
+      onLike();
+    }
+  }, [isLiked, onDislike, onLike]);
+
   useEffect(() => {
     getServiceProviderActivityDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    getItem(AsyncStorageKeyEnum.FAVORITES_IDS).then((value) => {
+      if (value && value.includes(params.serviceProviderId)) {
+        setIsLiked(true);
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -145,13 +200,16 @@ const ServiceProviderActivityDetails: React.FC = () => {
                   <HStack>
                     {userType === UserTypeEnum.CUSTOMER && (
                       <Pressable
+                        onPress={handleLikeAndDislike}
                         style={{
                           marginRight: RFValue(16),
                         }}
-                        opacity={0.6}
+                        _pressed={{
+                          opacity: 0.8,
+                        }}
                       >
-                        <Feather
-                          name="heart"
+                        <FontAwesome
+                          name={isLiked ? 'heart' : 'heart-o'}
                           size={RFValue(20)}
                           color="#5D5FEF"
                         />
