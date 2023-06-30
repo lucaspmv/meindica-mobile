@@ -85,7 +85,13 @@ const BottomTabRoutes = () => {
     >
       <Screen name={RouteNameEnum.EXPLORE} component={Explore} />
       {userType === UserTypeEnum.CUSTOMER ? (
-        <Screen name={RouteNameEnum.FAVORITES} component={Favorites} />
+        <Screen
+          name={RouteNameEnum.FAVORITES}
+          component={Favorites}
+          options={{
+            unmountOnBlur: true,
+          }}
+        />
       ) : (
         <Screen name={RouteNameEnum.SCHEDULE} component={Schedule} />
       )}

@@ -11,6 +11,7 @@ interface GetServiceProviderActivityResponseDTO {
   state: string;
   city: string;
   phone: string;
+  views: number;
 }
 
 export { GetServiceProviderActivityResponseDTO };

@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   Box,
   Text,
@@ -32,6 +38,9 @@ import { ServiceProviderCard } from './components/ServiceProviderCard';
 import { GetServiceProviderResponseDTO as ServiceProvider } from '@dtos/ServiceProviders/GetServiceProviderResponseDTO';
 
 import { getServiceProvidersService } from '@services/ServiceProviders/getServiceProviders';
+import { useFocusEffect } from '@react-navigation/native';
+
+import NoDataImage from '@assets/images/no-data.png';
 
 const Explore: React.FC = () => {
   const statePickerRef = useRef<any>(null);
@@ -41,6 +50,9 @@ const Explore: React.FC = () => {
   const [serviceProviders, setServiceProviders] = useState<ServiceProvider[]>(
     []
   );
+
+  const [refreshLikedServiceProviders, setRefreshLikedServiceProviders] =
+    useState(false);
   const [isRefreshing, setIsRefreshing] = useState(true);
 
   const [searchText, setSearchText] = useState('');
@@ -107,6 +119,12 @@ const Explore: React.FC = () => {
     getServiceProviders();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setRefreshLikedServiceProviders((prevState) => !prevState);
+    }, [])
+  );
 
   return (
     <>
@@ -264,6 +282,18 @@ const Explore: React.FC = () => {
             }}
             showsVerticalScrollIndicator={false}
             ItemSeparatorComponent={() => <Box h={RFValue(8)} />}
+            ListEmptyComponent={() => (
+              <Image
+                w={RFValue(186)}
+                h={RFValue(166)}
+                source={NoDataImage}
+                alt="Empty result"
+                mx="auto"
+                style={{
+                  marginTop: RFValue(50),
+                }}
+              />
+            )}
             renderItem={({ item }) => (
               <ServiceProviderCard
                 serviceProviderId={item.serviceProviderId}
@@ -272,6 +302,7 @@ const Explore: React.FC = () => {
                 activityName={item.activityName}
                 city={item.city}
                 image={item.avatar}
+                refresh={refreshLikedServiceProviders}
               />
             )}
           />
