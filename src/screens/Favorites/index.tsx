@@ -77,7 +77,7 @@ const Favorites: React.FC = () => {
             colors={[colors.purple[500]]}
           />
         }
-        keyExtractor={(item) => item.name}
+        keyExtractor={(item) => item.serviceProviderId}
         contentContainerStyle={{
           paddingTop: RFValue(16),
           paddingHorizontal: RFValue(24),
